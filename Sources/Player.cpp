@@ -115,9 +115,9 @@ Player::Update() {
         trigger = true;
     }
     MD2Model::Update();
-    // Then do the update for matrices and animation
+// Then do the update for matrices and animation
     pAnimation->Update(TheGame->DeltaTimePassed, trigger);
-    //	Animation.UpdateSlave();
+//	Animation.UpdateSlave();
     return true;
 }
 

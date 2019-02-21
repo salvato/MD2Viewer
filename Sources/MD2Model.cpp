@@ -29,7 +29,7 @@ MD2Model::MD2Model(MyFiles* FH, const char *FN, ModelManager* MM) {
     Scales = glm::vec3(0.2f);
     SetModelMatrix();
     pAnimation->SetSequence(0, 0, MD2Anim::HOLD);
-//	pAnimation->SetSequence((char*)"stand", this);
+    pAnimation->SetSequence("stand", this);
 }
 
 
@@ -58,7 +58,7 @@ MD2Model::~MD2Model() {
 }
 
 
-// not all models actually load their skin
+// Not all models actually load their skin
 bool
 MD2Model::LoadSkin(const char* FN, ModelManager* MM) {
 	 texture1 =  MM->TexManager.LoadandCreateTexture(FN);			
@@ -68,7 +68,7 @@ MD2Model::LoadSkin(const char* FN, ModelManager* MM) {
 
 bool
 MD2Model::Update() {
-//set up model view
+// Set up model view
     Rotations.x = DEG2RAD(DegreeRotations.x);
 	Rotations.y = DEG2RAD(DegreeRotations.y);
 	Rotations.z = DEG2RAD(DegreeRotations.z);
@@ -84,11 +84,8 @@ MD2Model::Update() {
 }
 
 
-static int PulseValue = 0;
-
 bool
 MD2Model::Draw() {
-    (void)PulseValue;
     glBindVertexArray(vertexArrayID);
     glUseProgram(programObject);
 	
@@ -100,18 +97,18 @@ MD2Model::Draw() {
     if(MyPhysObj != nullptr) {
 		btScalar transform[16]; // physics uses a 16 float matrix syste		
 		btTransform Trans;
-// now get transform from Bullet which has been converted to an OpenGL matrix format
+// Now get transform from Bullet which has been converted to an OpenGL matrix format
         MyPhysObj->GetTransform(transform);
         WorldPosition.x = transform[12];
         WorldPosition.y = transform[13];
         WorldPosition.z = transform[14]; // don't need the w.
-// work out forward and Right		
+// Work out forward and Right
 		btQuaternion orient = this->MyPhysObj->GetRigidBody()->getOrientation();	
 		Forward = btVector3(1, 0, 0);
 		Forward = quatRotate(orient, Forward);
 		Right = btVector3(0, 0, 1);
 		Right = quatRotate(orient, Right);
-// transfer the OpenGL (rotation and position) to Model matrix and mult by scale for a full Model Matrix	
+// Transfer the OpenGL (rotation and position) to Model matrix and mult by scale for a full Model Matrix
         for(int i=0; i<16; i++) // we now transfer our physics matrix
             Model[i/4][i%4] = transform[i]; // to our game matix for place and view
 		mScaleMatrix = glm::mat4(1.0f);
@@ -120,12 +117,11 @@ MD2Model::Draw() {
 		Model = T;
 	}
 
-// do a frustum check
-//	if(TheGame->GetCamera()->TheFrustum.TestSphere(this->WorldPosition, 1.0f) == false)
-//	{
-//		printf("I got Culled\n");
-//		return false;
-//	}
+// do a frustum check (Not Working)
+//    if(TheGame->GetCamera()->TheFrustum.TestSphere(this->WorldPosition, 1.0f) == false) {
+//        printf("I got Culled\n");
+//        return false;
+//    }
 	
 // test for an occulsion
 	RayReturn RayValues;
@@ -143,16 +139,16 @@ MD2Model::Draw() {
                                  PPPosition,
                                  RayValues
                     );
-// we'll always get a true, because we are going to at least hit the model,
+// We'll always get a true, because we are going to at least hit the model,
 // but we can test for a static, or a specific type.
         if(test && RayValues.WasItStatic) {// if there is a wall between our camera and it
-//            TheGame->m_pPhysicsDrawer->drawLine(Position,
-//                                                RayValues.WhereWeHit,
-//                                                btVector3(1.0f, 0.0f, 0.0f)
-//                                       ); // this is the contact ray
+            TheGame->m_pPhysicsDrawer->drawLine(Position,
+                                                RayValues.WhereWeHit,
+                                                btVector3(1.0f, 0.0f, 0.0f)
+                                       ); // this is the contact ray
 			return false;
 		}
-//	    this->TheGame->m_pPhysicsDrawer->drawLine(Position, RayValues.WhereWeHit, btVector3(1.0f, 1.0f, 1.0f)); // this is the contact ray
+        this->TheGame->m_pPhysicsDrawer->drawLine(Position, RayValues.WhereWeHit, btVector3(1.0f, 1.0f, 1.0f)); // this is the contact ray
 	}
 	glm::mat4* Projection = TheGame->GetCamera()->GetProjection(); 
     glm::mat4* View       = TheGame->GetCamera()->GetView();
@@ -218,13 +214,13 @@ MD2Model::Draw() {
 	}
 
 // Load the normal coordinate
-//	glVertexAttribPointer(this->NormalLoc,
-//		                  3, // there are 2 values
-//		                  GL_FLOAT, //they are floats
-//		                  GL_FALSE, // we don't need them normalised
-//		                  stride,  // whats the stride to the next ones
-//		                  (const void*)(sizeof(float) * 3)
-//	);
+    glVertexAttribPointer(GLuint(NormalLoc),
+                          3, // there are 2 values
+                          GL_FLOAT, //they are floats
+                          GL_FALSE, // we don't need them normalised
+                          stride,  // whats the stride to the next ones
+                          reinterpret_cast<void*>(sizeof(float) * 3)
+    );
 
 // Load the texture coordinate
     glVertexAttribPointer(GLuint(texCoordLoc),
@@ -249,7 +245,7 @@ MD2Model::Draw() {
     else {// if we have no textures use texture 1
         glBindTexture(GL_TEXTURE_2D, texture1);
     }
-//	glEnableVertexAttribArray(GLuint(NormalLoc));
+    glEnableVertexAttribArray(GLuint(NormalLoc));
     glEnableVertexAttribArray(GLuint(positionLoc));
     glEnableVertexAttribArray(GLuint(texCoordLoc));
 // set the other buffer up

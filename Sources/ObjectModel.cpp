@@ -15,7 +15,7 @@ ObjectModel::~ObjectModel() {
 }
 
 
-// set up an already established set of vertices
+// Set up from an already established set of vertices
 bool
 ObjectModel::LoadModel(GLvoid* a_Vertices) {
     this->Vertices = a_Vertices;
@@ -23,7 +23,7 @@ ObjectModel::LoadModel(GLvoid* a_Vertices) {
 }
 
 
-// create the model by load the rotations/positions/scale matrices
+// Create the model by load the rotations/positions/scale matrices
 void
 ObjectModel::SetModelMatrix() {
     //set the matrices we use to I
@@ -50,47 +50,47 @@ ObjectModel::MakeTranslationMatrix() {
 }
 
 
-// do the rotation matrices
+// Do the rotation matrices
 void
 ObjectModel::MakeRotationMatrix() {
     // set rotationx
     RotationMatrixX		= glm::mat4(1.0f);
     RotationMatrixX[1][1] = cosf(Rotations.x);
-    RotationMatrixX[2][1] = -sinf(Rotations.x);
+    RotationMatrixX[2][1] =-sinf(Rotations.x);
     RotationMatrixX[1][2] = sinf(Rotations.x);
     RotationMatrixX[2][2] = cosf(Rotations.x);
     //set rotationy
     RotationMatrixY		= glm::mat4(1.0f);
     RotationMatrixY[0][0] = cosf(Rotations.y);
     RotationMatrixY[2][0] = sinf(Rotations.y);
-    RotationMatrixY[0][2] = -sinf(Rotations.y);
+    RotationMatrixY[0][2] =-sinf(Rotations.y);
     RotationMatrixY[2][2] = cosf(Rotations.y);
     //set rotationz
     RotationMatrixZ		= glm::mat4(1.0f);
     RotationMatrixZ[0][0] = cosf(Rotations.z);
-    RotationMatrixZ[1][0] = -sinf(Rotations.z);
+    RotationMatrixZ[1][0] =-sinf(Rotations.z);
     RotationMatrixZ[0][1] = sinf(Rotations.z);
     RotationMatrixZ[1][1] = cosf(Rotations.z);
-    // now the combined rotation
+// Now the combined rotation
     mRotationMatrix = RotationMatrixX*RotationMatrixY*RotationMatrixZ;
 }
 
 
-// simply create the model matrix, assumes the translations and others have been set
+// Simply create the model matrix, assumes the translations and others have been set
 void
 ObjectModel::MakeModelMatrix() {
     Model = mTranslationMatrix * mRotationMatrix * mScaleMatrix;
 }
 
 
-// return the position info from worldposition
+// Return the position info from worldposition
 glm::vec3
 ObjectModel::GetPositon() {
     return WorldPosition;
 }
 
 
-//set the word position
+// Set the word position
 void
 ObjectModel::SetPosition(glm::vec3* a_Pos) {
     WorldPosition.x = 	a_Pos->x;
@@ -99,7 +99,7 @@ ObjectModel::SetPosition(glm::vec3* a_Pos) {
 }
 
 
-//set the world position
+// Set the world position
 void
 ObjectModel::SetPosition(glm::vec3 a_Pos) {
     WorldPosition = a_Pos;
@@ -150,7 +150,7 @@ ObjectModel::StoreGraphicClass(Graphics* Graphics) {
 }
 
 
-// only used if Bullet is present
+// Only used if Bullet is present
 #ifdef BULLET
 #include <bullet/btBulletDynamicsCommon.h>
 
@@ -181,7 +181,7 @@ ObjectModel::CreateMyShape(ShapeTypes shape) {
 }
 
 
-// these are collision response systems, Objectmodel should not be handling the logic
+// These are collision response systems, Objectmodel should not be handling the logic
 void
 ObjectModel::HandleCollision(const ObjectModel* whohitme) {
     (void)whohitme;
@@ -198,7 +198,7 @@ ObjectModel::HandleSeparation(const ObjectModel* whohitme) {
 }
 
 
-// a contact object may also include an object reported as a collision.
+// A contact object may also include an object reported as a collision.
 // its up to the logic to decide if thats relevent
 void
 ObjectModel::HandleContact(const ObjectModel *whohitme) {

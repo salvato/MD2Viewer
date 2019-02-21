@@ -131,7 +131,6 @@ Game::Init() {
     MyObjects.push_back(AKnight); // It's now on the system for possible updates/draws
     AKnight->StoreGraphicClass(MyGraphics);
     AKnight->TheGame = this;
-    AKnight->SetPosition(Pos);
     AKnight->programObject = MyGraphics->
             OurShaderManager->
             MakeProgramObject("Resources/Shaders/MD2_Vertex.vsh",
@@ -139,6 +138,7 @@ Game::Init() {
                               &Handler);
     AKnight->LoadSkin("Resources/Textures/knight.png",
                       &MainModelManager);// he does not auto load a skin
+    AKnight->SetPosition(Pos);
     AKnight->Scales = glm::vec3(0.15f);  // original models are quite large
     MainModelManager.GetBoundingBoxes(AKnight);
     AKnight->MyPhysObj = CreatePhysicsObj(AKnight->CreateMyShape(ObjectModel::CAPSULE),
