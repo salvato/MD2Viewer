@@ -36,59 +36,64 @@ LIBS += -lLinearMath
 
 
 
-SOURCES += main.cpp \
-    Game.cpp \
-    Graphics.cpp \
-    ObjectModel.cpp \
-    MyFiles.cpp \
-    ModelManager.cpp \
-    Font3D.cpp \
-    ShaderManager.cpp \
-    TextureManager.cpp \
-    OffsetFollow.cpp \
-    Ground.cpp \
-    BinaryReader.cpp \
-    TinyObjectLoader.cpp \
-    Camera.cpp \
-    Frustum.cpp \
-    OBJModel.cpp \
-    Player.cpp \
-    MD2Anim.cpp \
-    MD2Model.cpp \
-    CollisionProcess.cpp \
-    EnemyManager.cpp \
-    PhysicsDraw.cpp \
-    PhysicsObj.cpp \
-    Rays.cpp
-
+SOURCES += \
+    Sources/BinaryReader.cpp \
+    Sources/Camera.cpp \
+    Sources/CollisionProcess.cpp \
+    Sources/EnemyManager.cpp \
+    Sources/Font3D.cpp \
+    Sources/Frustum.cpp \
+    Sources/Game.cpp \
+    Sources/Graphics.cpp \
+    Sources/Ground.cpp \
+    Sources/main.cpp \
+    Sources/MD2Anim.cpp \
+    Sources/MD2Model.cpp \
+    Sources/ModelManager.cpp \
+    Sources/MyFiles.cpp \
+    Sources/ObjectModel.cpp \
+    Sources/OBJModel.cpp \
+    Sources/OffsetFollow.cpp \
+    Sources/PhysicsDraw.cpp \
+    Sources/PhysicsObj.cpp \
+    Sources/Player.cpp \
+    Sources/Quad.cpp \
+    Sources/Rays.cpp \
+    Sources/ShaderManager.cpp \
+    Sources/TextureManager.cpp \
+    Sources/TinyObjectLoader.cpp
 
 HEADERS += \
-    Game.h \
-    Graphics.h \
-    ObjectModel.h \
-    MyFiles.h \
-    ModelManager.h \
-    Font3D.h \
-    ShaderManager.h \
-    TextureManager.h \
-    OffsetFollow.h \
-    Ground.h \
-    BinaryReader.h \
-    tiny_obj_loader.h \
-    Camera.h \
-    Frustum.h \
-    OBJModel.h \
-    Player.h \
-    MD2.h \
-    MD2Anim.h \
-    MD2Model.h \
-    CollisionProcess.h \
-    Enemies.h \
-    EnemyManager.h \
-    PhysicsDraw.h \
-    PhysicsObj.h \
-    Rays.h
+    Headers/BinaryReader.h \
+    Headers/Camera.h \
+    Headers/CollisionProcess.h \
+    Headers/Enemies.h \
+    Headers/EnemyManager.h \
+    Headers/Font3D.h \
+    Headers/Frustum.h \
+    Headers/Game.h \
+    Headers/Graphics.h \
+    Headers/Ground.h \
+    Headers/GroundPlane.h \
+    Headers/MD2.h \
+    Headers/MD2Anim.h \
+    Headers/MD2Model.h \
+    Headers/ModelManager.h \
+    Headers/MyFiles.h \
+    Headers/ObjectModel.h \
+    Headers/OBJModel.h \
+    Headers/OffsetFollow.h \
+    Headers/PhysicsDraw.h \
+    Headers/PhysicsObj.h \
+    Headers/Player.h \
+    Headers/Quad.h \
+    Headers/Rays.h \
+    Headers/ShaderManager.h \
+    Headers/stb_image.h \
+    Headers/TextureManager.h \
+    Headers/tiny_obj_loader.h
 
-RESOURCES +=
+RESOURCES += \
+    md2viewer.qrc
 
 DISTFILES +=

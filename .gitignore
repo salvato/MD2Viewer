@@ -7,7 +7,6 @@
 *.core
 *.moc
 *.o
-*.obj
 *.orig
 *.rej
 *.so
@@ -70,4 +69,6 @@ Thumbs.db
 # --------
 *.dll
 *.exe
-
+# Qt
+# --------
+*.pro.*

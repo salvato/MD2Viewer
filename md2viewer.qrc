@@ -1,0 +1,26 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Resources/Shaders/MD2_Fragment.fsh</file>
+        <file>Resources/Shaders/MD2_Vertex.vsh</file>
+        <file>Resources/Shaders/ObjectFragWithShadows.fsh</file>
+        <file>Resources/Shaders/ObjectVertWithShadows.vsh</file>
+        <file>Resources/Shaders/ShadowMap.fsh</file>
+        <file>Resources/Shaders/ShadowMap.vsh</file>
+        <file>Resources/Shaders/SimpleTri.fsh</file>
+        <file>Resources/Shaders/SimpleTri.vsh</file>
+        <file>Resources/Shaders/textShader.fsh</file>
+        <file>Resources/Shaders/textShader.vsh</file>
+        <file>Resources/Models/BattleDroid.md2</file>
+        <file>Resources/Models/knight.md2</file>
+        <file>Resources/Models/level00.obj</file>
+        <file>Resources/Models/TurretDroid.md2</file>
+        <file>Resources/Textures/BattleDroid.png</file>
+        <file>Resources/Textures/knight.png</file>
+        <file>Resources/Textures/metalfloor1.png</file>
+        <file>Resources/Textures/metalfloor5.png</file>
+        <file>Resources/Textures/metalwall1.png</file>
+        <file>Resources/Textures/TurretDroid.png</file>
+        <file>Resources/Fonts/atari-font.bmp</file>
+        <file>Resources/Material/level00.mtl</file>
+    </qresource>
+</RCC>
