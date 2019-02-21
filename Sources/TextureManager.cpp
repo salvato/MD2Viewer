@@ -31,10 +31,10 @@ TextureManager::LoadandCreateTexture(const char* fname, MyFiles* FH) {
             printf("Unable to load texture:%s \n", cstr);
             exit(1);
         }
-        printf("Texture info for %s :-\n", cstr);
-        printf("# width   : %d\n", w);
-        printf("# Height  : %d\n", h);
-        printf("# comp    : %d\n", FH->comp);
+//        printf("Texture info for %s :-\n", cstr);
+//        printf("# width   : %d\n", w);
+//        printf("# Height  : %d\n", h);
+//        printf("# comp    : %d\n", FH->comp);
         glGenTextures(1, &texture_id);
         glBindTexture(GL_TEXTURE_2D, texture_id);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);

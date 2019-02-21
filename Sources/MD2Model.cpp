@@ -16,9 +16,7 @@ MD2Model::MD2Model(MyFiles* FH, const char *FN, ModelManager* MM) {
     Model	            = glm::mat4(1.0f);
     glm::vec3 Pos = glm::vec3(0.0f, 1.0f, 0.4f);
     SetPosition(Pos);
-#ifdef BULLET
     this->MyPhysObj = nullptr;
-#endif // Bullet
     pAnimation = new MD2Anim();
     MM->LoadMD2(this, FN, FH);
     TheModelManager = MM; // our draw will need this
@@ -45,9 +43,7 @@ MD2Model::MD2Model() {
 	Colour = glm::vec4(Rand(1.0f), Rand(1.0f), Rand(1.0f), 1.0f);
     pAnimation = new MD2Anim();
     pAnimation->SetSequence("stand", this);
-#ifdef BULLET
     this->MyPhysObj = nullptr;
-#endif // Bullet
     glGenVertexArrays(1, &vertexArrayID);
 }
 

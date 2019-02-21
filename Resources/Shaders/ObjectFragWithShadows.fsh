@@ -24,7 +24,7 @@ void
 main() {
     float fLight = 1.0; // the potential final light value
 
-    /* we need to get the packed light distance data from the shadow texture, texture1. */
+// we need to get the packed light distance data from the shadow texture, texture1.
     vec2 Depth = texture2DProj(u_s2dShadowMap, v_ShadowTexCoord).xy;
     // its in 2 values scaled down so resize them
     float fDepth = (Depth.x * 10.0 + Depth.y);
@@ -35,6 +35,6 @@ main() {
                       // perhaps have influenced by other light sources
     }
 
-    FragColor = texture2D( s_texture, v_texCoord )*fLight; // we can also add other colours or light effects
+    FragColor = texture2D(s_texture, v_texCoord)*fLight; // we can also add other colours or light effects
     FragColor.w = 1.0;
 }

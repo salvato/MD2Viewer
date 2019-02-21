@@ -126,7 +126,7 @@ Player::Update() {
 Collision handlers, all types that need collision responses need this.
 How we handle collision and separation will depend on what we collide
 with and sometimes at what angle!
-Remember these only handle actual collision and seperation
+Remember these only handle actual collision and separation
 *******************************************************************************************/
 void
 Player::HandleCollision(const ObjectModel *WhatDidIHit) {
@@ -151,6 +151,6 @@ Player::HandleSeparation(const ObjectModel* WhatDidIHit) {
 void
 Player::HandleContact(const ObjectModel *WhatDidIHit) {
     (void)WhatDidIHit;
-//        if (WhatDidIHit->WhatAmI == ObjectModel::e_GROUND)
-//            printf("I am in contact with the ground\n");
+        if (WhatDidIHit->WhatAmI == ObjectModel::e_GROUND)
+            printf("I am in contact with the ground\n");
 }

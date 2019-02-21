@@ -60,7 +60,6 @@ public:
 	
 	float DeltaTimePassed; 
 		
-#ifdef BULLET	
 // Physics stuff
 // We need a simple means to create the physics data
 	void ShutDown();
@@ -80,7 +79,6 @@ public:
 // names and if already created we won't make another;
 	std::map<std::string, btCollisionShape*> ExistingColShapes;
 	CollisionProcess Collision;
-#endif
 
 protected:
     Rays RayClass;

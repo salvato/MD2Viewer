@@ -55,12 +55,13 @@ ShaderManager::MakeProgramObject(GLuint VShad, GLuint FShad) {
 GLuint
 ShaderManager::LoadAndMakeShader(MyFiles* FH, GLenum type, const char* Fname) {
     const char* ShaderTxt = FH->LoadText(Fname);
-    // print out the shader
-    printf("shader loaded from filename %s \n", Fname);
+// Print out the shader
+//    printf("shader loaded from filename %s \n", Fname);
     GLuint Shader = MakeShader(type, ShaderTxt);
     if (Shader == 0) {
         printf("Failed to compile Shader/n");
         printf("%s\n", ShaderTxt);
+        exit(EXIT_FAILURE);
     }
     return Shader; // it will return 0 if its failed so watch for that
 }
@@ -97,7 +98,7 @@ ShaderManager::MakeProgramObject(const char* Vfname, const char* Ffname, MyFiles
     GLuint vShad = LoadAndMakeShader(FH, GL_VERTEX_SHADER, Vfname);
     GLuint fShad = LoadAndMakeShader(FH, GL_FRAGMENT_SHADER, Ffname);
     GLuint PO = MakeProgramObject(vShad, fShad);
-    // we do checks for validity in each routine so no real need to check again but leave the option open
+// We do checks for validity in each routine so no real need to check again but leave the option open
     return PO;
 }
 

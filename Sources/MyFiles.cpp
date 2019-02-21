@@ -20,7 +20,7 @@ MyFiles::Load(char const *filename, int* width, int* height) {
         stbi_image_free(data);
         exit(EXIT_FAILURE);
     }
-    printf("Loaded texture : %s\n", filename);
+//    printf("Loaded texture : %s\n", filename);
     return reinterpret_cast<char*>(data);
 }
 

@@ -1,5 +1,6 @@
 #include "ObjectModel.h"
 #include "Graphics.h"
+#include <bullet/btBulletDynamicsCommon.h>
 
 
 //******************************************************************************************
@@ -150,9 +151,6 @@ ObjectModel::StoreGraphicClass(Graphics* Graphics) {
 }
 
 
-// Only used if Bullet is present
-#ifdef BULLET
-#include <bullet/btBulletDynamicsCommon.h>
 
 
 btCollisionShape*
@@ -186,7 +184,7 @@ void
 ObjectModel::HandleCollision(const ObjectModel* whohitme) {
     (void)whohitme;
     // really this should be over ridden
-    // printf("Base Class reports hit\n");
+//     printf("Base Class reports hit\n");
 }
 
 
@@ -194,7 +192,7 @@ void
 ObjectModel::HandleSeparation(const ObjectModel* whohitme) {
     (void)whohitme;
     // really this should be over ridden
-    // printf("Base Class reports seperation\n");
+//     printf("Base Class reports seperation\n");
 }
 
 
@@ -204,6 +202,5 @@ void
 ObjectModel::HandleContact(const ObjectModel *whohitme) {
     (void)whohitme;
     // really this should be over ridden
-    // printf("Base Class reports contact\n");
+//     printf("Base Class reports contact\n");
 }
-#endif

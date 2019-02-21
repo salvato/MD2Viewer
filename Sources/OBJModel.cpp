@@ -1,8 +1,6 @@
 #include "OBJModel.h"
 #include "Game.h"
-#ifdef BULLET
 #include "bullet/LinearMath/btQuaternion.h"
-#endif 
 
 #define DEBUGWANTED 0
 
@@ -44,9 +42,7 @@ OBJModel::OBJModel()
 	Amb[3] = 1.0f;
 	DegreeRotations = glm::vec3(0);
     glGenVertexArrays(1, &vertexArrayID);
-#ifdef BULLET
     this->MyPhysObj = nullptr;
-#endif 
 }
 
 
@@ -88,7 +84,6 @@ OBJModel::Update() {
 		MakeTranslationMatrix();
 		MakeModelMatrix(); 
 	}
-#ifdef BULLET
     else {
 		glm::vec2 worldpos2D = glm::vec2(100, 100);
 		glm::vec2 speed = glm::vec2(5, 5);
@@ -116,7 +111,7 @@ OBJModel::Update() {
 		glm::mat4 T = Model*mScaleMatrix;
 		Model = T;
 	}
-#endif // BULLET
+
     glm::mat4* Projection = TheGame->GetCamera()->GetProjection();
 	glm::mat4* View = TheGame->GetCamera()->GetView();
 	// make the MVP and MV if using light (light does not need projection)

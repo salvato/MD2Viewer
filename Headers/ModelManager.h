@@ -44,16 +44,7 @@
 #include	"TextureManager.h"
 #include	"BinaryReader.h"
 #include	"MD2.h"
-
-#ifdef BULLET // if bullet is defined and installed, we will use this
-#include <bullet/btBulletDynamicsCommon.h>
-#else
-typedef struct { // otherwise this is a temp and probably unused concept but some functions set defaults
-    float x;
-    float y;
-    float z;
-} btVector3;
-#endif
+#include    <bullet/btBulletDynamicsCommon.h>
 
 
 class ModelManager
@@ -91,7 +82,7 @@ public:
                       MyFiles* FH,
                       const char* filename,
                       std::vector<btVector3>* CollisionMesh = nullptr
-         ); //note default null value
+            ); //note default null value
     // the workhorse loader	for obj
     bool LoadandConvert(std::vector<ObjectModel::DrawObject>* drawObjects,		/*passed from the object*/
                         std::vector<tinyobj::material_t>& materials, /* passed from and to the object*/
@@ -99,7 +90,7 @@ public:
                         const char* filename,
                         MyFiles* FH,
                         std::vector<btVector3>* CollisionMesh = nullptr
-         ); //only if a call supplies the mesh do we collect and store it.
+            ); //only if a call supplies the mesh do we collect and store it.
 
     void GetBoundingBoxes(ObjectModel* OM);
 

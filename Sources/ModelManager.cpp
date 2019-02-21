@@ -1,11 +1,8 @@
 // Model Manager
+
 // Primary function is to load models and their mat/textures and store them in OAB's or in ObjModel data
 // Most OBJ's will go to the OAB and use TinyObjLoader to do their conversion and storage.
 // Contains the maps and texture lists to prevent double loads of texture files and OAB's
-
-// MD2Models can optionally choose to use their global normal values, though they are repeated for each vector in a triangle
-// ensure that MD2NORMS is defined as you want it in MD2Model.h
-
 
 
 // Parts of this file, specifically the routines, LoadandConvert and CalcNormal as well as the data structures used by them
@@ -37,19 +34,8 @@
 
 
 #include "ModelManager.h"
-#include "MD2Model.h" // we need to know if MD2NORMS are wanted
 
-#define PRINT_ANIM
-
-
-#ifdef MD2NORMS
-// if defined include the standard MD2 normal indexed by a byte value in the data.
-// if you plan to do any lighitng on your MD2, you will need to include this, so it is defaulted to defined
-// M2DModel.cpp sets up the correct attributes
-static float MD2Norms[256][3] = {
-#include "anorms.h"
-};
-#endif // MD2norms
+//#define PRINT_ANIM
 
 
 ModelManager::ModelManager()  {
@@ -97,30 +83,30 @@ ModelManager::LoadandConvert(std::vector<ObjectModel::DrawObject>* drawObjects,
                                 &err, filename,
                                 "Resources/Material/"
                         );
-// check for errors
-    if (!err.empty()) {
+// Check for errors
+    if(!err.empty()) {
         char *cstr = &err[0u];// printf needs chars
         printf("oh Bugger can't load this %s, file returns error %s \n", filename, cstr);
-        return false; // we failed no sense in continuing.
+        exit(EXIT_FAILURE); // we failed no sense in continuing.
     }
-//it may have loaded but not parsed correctly
-    if (!ret) {
+// It may have loaded but not parsed correctly
+    if(!ret) {
         printf("The %s.obj seems to be corrupt or incorrectly formated\n", filename);
-        return false;
+        exit(EXIT_FAILURE);
     }
-// output the use data for reference
-    printf("Attrib data for %s is :-\n", filename);
-    printf("# vertices  : %d\n", int(attrib.vertices.size()) / 3);
-    printf("# normals   : %d\n", int(attrib.normals.size()) / 3);
-    printf("# texcoords : %d\n", int(attrib.texcoords.size()) / 2);
-    printf("Other data  :-%s\n", " - - -");
-    printf("# materials : %d\n", int(materials.size()));
-    for (uint i=0; i<shapes.size(); i++)  {
-        printf("# Indices in shapes[%d]  : %d\n",
-               i,
-               int(shapes[i].mesh.indices.size())
-        );
-    }
+// Output the use data for reference
+//    printf("Attrib data for %s is :-\n", filename);
+//    printf("# vertices  : %d\n", int(attrib.vertices.size()) / 3);
+//    printf("# normals   : %d\n", int(attrib.normals.size()) / 3);
+//    printf("# texcoords : %d\n", int(attrib.texcoords.size()) / 2);
+//    printf("Other data  :-%s\n", " - - -");
+//    printf("# materials : %d\n", int(materials.size()));
+//    for(uint i=0; i<shapes.size(); i++)  {
+//        printf("# Indices in shapes[%d]  : %d\n",
+//               i,
+//               int(shapes[i].mesh.indices.size())
+//        );
+//    }
  // Append `default` material so there is something at 0
     materials.push_back(tinyobj::material_t());
     const char* base_dir = "Resources/Textures/";
@@ -130,8 +116,8 @@ ModelManager::LoadandConvert(std::vector<ObjectModel::DrawObject>* drawObjects,
             tinyobj::material_t* mp = &materials[m];
             if(mp->diffuse_texname.length() > 0) {
                 char *cstr10 = &mp->diffuse_texname[0u]; // embarrasing side effect of the decision to use char.....
-                printf("# Texture name    : %s \n", cstr10);
-                printf("# Size of Map     : %lud \n", textures.size());
+//                printf("# Texture name    : %s \n", cstr10);
+//                printf("# Size of Map     : %lu \n", textures.size());
                 // Only load the texture if it is not already loaded
                 if(textures.find(mp->diffuse_texname) == textures.end()) {
                     GLuint texture_id;
@@ -144,10 +130,10 @@ ModelManager::LoadandConvert(std::vector<ObjectModel::DrawObject>* drawObjects,
                         printf("Unable to load texture:%s \n", cstr);
                         exit(EXIT_FAILURE);
                     }
-                    printf("Texture info for %s :-\n", cstr);
-                    printf("# width   : %d\n", w);
-                    printf("# Height  : %d\n", h);
-                    printf("# comp    : %d\n", FH->comp);
+//                    printf("Texture info for %s :-\n", cstr);
+//                    printf("# width   : %d\n", w);
+//                    printf("# Height  : %d\n", h);
+//                    printf("# comp    : %d\n", FH->comp);
                     glGenTextures(1, &texture_id);
                     glBindTexture(GL_TEXTURE_2D, texture_id);
                     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
@@ -162,20 +148,19 @@ ModelManager::LoadandConvert(std::vector<ObjectModel::DrawObject>* drawObjects,
                     if(glGetError() != GL_NO_ERROR) {
                         printf("Oh bugger:- Model texture creation error, but attempting to carry on.\n");
                     }
-                    glGenerateMipmap(GL_TEXTURE_2D); // uncomment if you want to use mipmapping....
-                                                     // of course you do in any game with depth.
+                    glGenerateMipmap(GL_TEXTURE_2D);
                     glBindTexture(GL_TEXTURE_2D, 0);
-                    free(image); // release the cpu memory once its been put in the GPU
+                    free(image); // Release the cpu memory once its been put in the GPU
                     textures.insert(std::make_pair(mp->diffuse_texname, texture_id));
                 }
-                else
-                    printf("Texture %s already present not reloaded \n", cstr10);
+//                else
+//                    printf("Texture %s already present not reloaded \n", cstr10);
             }
         }
     }
 // Note this version produces ONLY vertex arrays, and does so by using indices
 // to find the vertices.
-// A considerable rendering improvment can be had by creating
+// A considerable rendering improvement can be had by creating
 // VBs of the unique vertices and indices...hint
 //		 int howmanyShapes = shapes.size();
 // fix/update the min and max, held as local class variables,
@@ -283,13 +268,12 @@ ModelManager::LoadandConvert(std::vector<ObjectModel::DrawObject>* drawObjects,
                     vb.push_back(v[k][0]);
                     vb.push_back(v[k][1]);
                     vb.push_back(v[k][2]);
-#ifdef BULLET // only relevent if we have Bullet in place
-                    if(Mesh != nullptr) {// if we are storint to a mesh, lets collect the vertex and send to the supplied mesh vector.
+// If we are storing to a mesh, lets collect the vertex and send to the supplied mesh vector.
+                    if(Mesh != nullptr) {
                         btVector3 vert = btVector3( v[k][0], v[k][1], v[k][2]);
                         Mesh->push_back(vert);
                     }
-#endif // BULLET
-                // uncomment if you want to see the data in console out
+// Uncomment if you want to see the data in console out
                 //	printf("v1 v2 v3 =%f  %f  %f\n", v[k][0], v[k][1], v[k][2]);
                     vb.push_back(n[k][0]);
                     vb.push_back(n[k][1]);
@@ -318,7 +302,7 @@ ModelManager::LoadandConvert(std::vector<ObjectModel::DrawObject>* drawObjects,
             }
             o.vb = 0;
             o.numTriangles = 0;
-            // OpenGL viewer does not support texturing with per-face material.
+// OpenGL viewer does not support texturing with per-face material.
             if(shapes[s].mesh.material_ids.size() > 0 &&
                shapes[s].mesh.material_ids.size() > s)
             {// Base case
@@ -327,7 +311,7 @@ ModelManager::LoadandConvert(std::vector<ObjectModel::DrawObject>* drawObjects,
             else {
                 o.material_id = materials.size() - 1; // = ID for default material.
             }
-// check here if we already have a vbo for this mesh in which case
+// Check here if we already have a vbo for this mesh in which case
 // copy the shape details and do not create another
             if(ExistingShapes.find(shapes[s].name) == ExistingShapes.end()) {
                 if(vb.size() > 0) {
@@ -338,17 +322,17 @@ ModelManager::LoadandConvert(std::vector<ObjectModel::DrawObject>* drawObjects,
                                  &vb.at(0),
                                  GL_STATIC_DRAW
                     );
-                    //not really the number of triangles but the number of components parts.
+//not really the number of triangles but the number of components parts.
                     o.numTriangles = int(vb.size() / (3 + 3 + 3 + 2));
-                    printf("shape[%d] # of triangles = %d\n",
-                           static_cast<int>(s),
-                           o.numTriangles/3);
+//                    printf("shape[%d] # of triangles = %d\n",
+//                           static_cast<int>(s),
+//                           o.numTriangles/3);
                     GLsizei size;
                     glGetBufferParameteriv(GL_ARRAY_BUFFER, GL_BUFFER_SIZE, &size);
-                    printf("VB is reported as %d \n", size);
+//                    printf("VB is reported as %d \n", size);
                     ExistingShapes.insert(std::make_pair(shapes[s].name, o));
-                    printf("Stored values are %zu, %d, vbID=  %d,  size of map is %lu \n",
-                           o.material_id, o.numTriangles, o.vb, ExistingShapes.size());
+//                    printf("Stored values are %zu, %d, vbID=  %d,  size of map is %lu \n",
+//                           o.material_id, o.numTriangles, o.vb, ExistingShapes.size());
                     drawObjects->push_back(o);
                 }
             }
@@ -356,25 +340,25 @@ ModelManager::LoadandConvert(std::vector<ObjectModel::DrawObject>* drawObjects,
                 o.material_id = ExistingShapes[shapes[s].name].material_id;
                 o.numTriangles = ExistingShapes[shapes[s].name].numTriangles;
                 o.vb = ExistingShapes[shapes[s].name].vb;
-                printf("duplicated values are %zu, %d, %d  size of map is %lu \n",
-                       o.material_id,
-                       o.numTriangles,
-                       o.vb,
-                       ExistingShapes.size()
-                );
+//                printf("duplicated values are %zu, %d, %d  size of map is %lu \n",
+//                       o.material_id,
+//                       o.numTriangles,
+//                       o.vb,
+//                       ExistingShapes.size()
+//                );
                 drawObjects->push_back(o);
             }
         }
     }
-    printf("bmin = %f, %f, %f\n", double(bmin[0]), double(bmin[1]), double(bmin[2]));
-    printf("bmax = %f, %f, %f\n", double(bmax[0]), double(bmax[1]), double(bmax[2]));
+//    printf("bmin = %f, %f, %f\n", double(bmin[0]), double(bmin[1]), double(bmin[2]));
+//    printf("bmax = %f, %f, %f\n", double(bmax[0]), double(bmax[1]), double(bmax[2]));
     glBindTexture(GL_TEXTURE_2D,0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     return true;
 }
 
 
-// give the object the bmin and bmax values, they are not always used so this is an optional load
+// Give the object the bmin and bmax values, they are not always used so this is an optional load
 // for a model
 void
 ModelManager::GetBoundingBoxes(ObjectModel* OM) {
@@ -393,10 +377,10 @@ it is up to the instancing to provide a nice texture.
 ****************************************************************************************/
 bool
 ModelManager::LoadMD2(ObjectModel* model, const char* Filename, MyFiles* FH) {
-    printf("Attempting to load: %s\n", Filename);
+//    printf("Attempting to load: %s\n", Filename);
 // check if we already loaded this, if so, use it, and 	don't load again
     if(!(AllMD2Meshes.find(Filename) == AllMD2Meshes.end())) {// ok we have this one
-        printf("But we alreay got this one: %s\n", Filename);
+//        printf("But we alreay got this one: %s\n", Filename);
         model->TheMD2Data = AllMD2Meshes[Filename];
         return true;
     }
@@ -416,7 +400,7 @@ ModelManager::LoadMD2(ObjectModel* model, const char* Filename, MyFiles* FH) {
     reader.Seek(header->offsetSkins);
     base_dir = "Resources/Textures/";
     if(header->numSkins == 0) {
-        printf("***!!!! Take note, this model has no defined skins\n    You should load your own texture!\n");
+//        printf("***!!!! Take note, this model has no defined skins\n    You should load your own texture!\n");
     }
     for(int i=0; i<header->numSkins; i++) {
         tinyobj::material_t material;
@@ -469,10 +453,10 @@ ModelManager::LoadMD2(ObjectModel* model, const char* Filename, MyFiles* FH) {
                 }
             }
             if(pos) printf("Substitute texture type %s loaded ok\n", cstr);
-            printf("Texture info for %s :-\n", cstr);
-            printf("# width   : %d\n", w);
-            printf("# Height  : %d\n", h);
-            printf("# comp    : %d\n", FH->comp);
+//            printf("Texture info for %s :-\n", cstr);
+//            printf("# width   : %d\n", w);
+//            printf("# Height  : %d\n", h);
+//            printf("# comp    : %d\n", FH->comp);
             glGenTextures(1, &texture_id);
             glBindTexture(GL_TEXTURE_2D, texture_id);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -600,24 +584,13 @@ ModelManager::LoadMD2(ObjectModel* model, const char* Filename, MyFiles* FH) {
                 uv = uvs[index];
                 mesh.vertexBuffer.push_back(uv.x);
                 mesh.vertexBuffer.push_back(uv.y);
-
-#ifdef MD2NORMS
-                // we need to send it 3 times :(
-                mesh.vertexBuffer.push_back(MD2Norms[NormalIndex][0]);
-                mesh.vertexBuffer.push_back(MD2Norms[NormalIndex][1]);
-                mesh.vertexBuffer.push_back(MD2Norms[NormalIndex][2]);
-#endif // MD@NORMS
             }//for(int p=0; p<3; p++)
         }//for(int tr=0; tr<header->numTris; tr++)
 
         // Done with vertices delete it !
         delete[] vertices;
         if(mesh.vertexBuffer.size() > 0) {
-    #ifdef MD2NORMS
-            mesh.numTriangles = int(mesh.vertexBuffer.size() / ((3+3+2)*3));
-    #else
             mesh.numTriangles = int(mesh.vertexBuffer.size() / ((3+2)*3));
-    #endif // MD2NORMS
             glGenBuffers(1, &mesh.vbo);
             glBindBuffer(GL_ARRAY_BUFFER, mesh.vbo);
             glBufferData(GL_ARRAY_BUFFER,

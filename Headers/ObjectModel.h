@@ -17,10 +17,7 @@ functionality should be included in the derived class
 #include "MD2.h"
 
 #define BULLET
-
-#ifdef BULLET
 #include "PhysicsObj.h"
-#endif
 
 
 #define PI			3.14159265358979323846264338327950288419716939937510582097494459072381640628620899862803482534211706798f
@@ -136,7 +133,6 @@ public:
     virtual void HandleContact(const ObjectModel* WhatDidIHit);
     ObjectType	WhatAmI;
 
-#ifdef BULLET	
     PhysicsObj* MyPhysObj;
     btVector3 Forward;
     btVector3 Right;
@@ -149,7 +145,6 @@ public:
         CYLINDER // add others if you want
     } ShapeTypes;
     btCollisionShape* CreateMyShape(ShapeTypes);
-#endif
 };
 /*
  * OpenGL provides an object that stores all of the state needed for rendering:
