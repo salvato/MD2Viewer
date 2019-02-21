@@ -36,6 +36,6 @@ EnemyData Enemies[] = {
     EnemyData(-30, 12, 10, TURRET),
     EnemyData(-10, 13, 10, BATTLE),
     EnemyData( 10, 14,  5, TURRET),
-    EnemyData( 15, 15,  0, TURRET),
+    EnemyData( 15, 15,-10, TURRET),
     EnemyData(-25, 1, -25, TURRET)
 };

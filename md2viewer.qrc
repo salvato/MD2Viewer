@@ -23,5 +23,9 @@
         <file>Resources/Fonts/atari-font.bmp</file>
         <file>Resources/Material/level00.mtl</file>
         <file>Resources/Models/ruin2_walled.obj</file>
+        <file>Resources/Textures/grass.png</file>
+        <file>Resources/Textures/rock.png</file>
+        <file>Resources/Textures/stone_floor.png</file>
+        <file>Resources/Textures/stone_wall.png</file>
     </qresource>
 </RCC>

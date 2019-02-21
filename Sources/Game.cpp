@@ -119,7 +119,7 @@ Game::Init() {
 //==============================
 // Now put our Player on the map
 //==============================
-    Pos = glm::vec3(-0.0, 0.0, 0.0f);
+    Pos = glm::vec3(1.0, 10.0, 0.0f);
     Player* AKnight = new Player(pHandler,
                                  "Resources/Models/knight.md2",
                                  pMainModelManager);
