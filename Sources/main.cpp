@@ -1,17 +1,10 @@
-
 #include <stdio.h>
-#include <assert.h>
-#include <math.h>
 #include <sys/time.h>
-
 #include <GL/glew.h>
-#include <GLFW/glfw3.h>
-
 
 #include "Game.h"
-#include "Graphics.h"
 
-#define PRINT_GPU_INFO
+//#define PRINT_GPU_INFO
 //#define PRINT_FRAME_TIME
 
 

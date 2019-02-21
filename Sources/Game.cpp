@@ -100,7 +100,6 @@ Game::Init() {
     Ruin->SetPosition(Pos);
     MyObjects.push_back(Ruin); // Now it's on the system for possible updates/draws
     Ruin->StoreGraphicClass(MyGraphics);
-    MyGraphics->Init(Ruin);
     Ruin->programObject =
             MyGraphics->
             OurShaderManager->
@@ -133,7 +132,6 @@ Game::Init() {
     AKnight->StoreGraphicClass(MyGraphics);
     AKnight->TheGame = this;
     AKnight->SetPosition(Pos);
-    MyGraphics->Init(AKnight);
     AKnight->programObject = MyGraphics->
             OurShaderManager->
             MakeProgramObject("Resources/Shaders/MD2_Vertex.vsh",

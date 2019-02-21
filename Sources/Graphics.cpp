@@ -1,16 +1,20 @@
 #include "Graphics.h"
+#include "ObjectModel.h"
+#include "ShaderManager.h"
 
 #include <stdio.h>
-#include <sstream>
 
 
-Graphics::Graphics() {
+Graphics::Graphics()
+    : OurShaderManager(nullptr)
+{
     OurShaderManager = new ShaderManager();
 }
 
 
 Graphics::~Graphics() {
-    delete OurShaderManager;
+    if(OurShaderManager)
+        delete OurShaderManager;
 }
 
 
@@ -66,7 +70,7 @@ Graphics::init_ogl() {
     // Ensure we can capture the escape key being pressed below
     glfwSetInputMode(state.nativewindow, GLFW_STICKY_KEYS, GL_TRUE);
     // Hide the mouse and enable unlimited mouvement
-    //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>glfwSetInputMode(state.nativewindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    //>>glfwSetInputMode(state.nativewindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
     // Set the mouse at the center of the screen
     glfwPollEvents();
@@ -81,26 +85,15 @@ Graphics::init_ogl() {
 }
 
 
-// Initialise an object so that it uses the correct values
-// Now, for the moment since all our models use the same shader this is ok
-// but soon we will use different shaders for different models,
-// and this won't be as useful
-int
-Graphics::Init(ObjectModel* TheModel) {
-    return (TheModel != nullptr);
-}
-
-
-// only used when creating dynamic shadows.
-// Create and return a frame buffer object
+// Used when creating dynamic shadows: it
+// create and return a frame buffer object
 GLuint
 Graphics::CreateShadowBuffer(int width, int height) {
     GLuint	FBO, RenderBuffer;
-    glActiveTexture(GL_TEXTURE1);  // use an unused texture
-
-// make a texture the size of the screen
+    glActiveTexture(GL_TEXTURE1);  // Use an unused texture
+// Make a texture the size of the screen
     glGenTextures(1, &ShadowTexture);
-    glBindTexture(GL_TEXTURE_2D, ShadowTexture); // its bound to texture 1
+    glBindTexture(GL_TEXTURE_2D, ShadowTexture); // it is bound to texture 1
 
     glTexImage2D(GL_TEXTURE_2D,
                  0,
@@ -116,30 +109,32 @@ Graphics::CreateShadowBuffer(int width, int height) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-// once the texture is set up, we can turn to the Framebuffer
-    glGenFramebuffers(1, &FBO); // allocate a FrameBuffer
-    glGenRenderbuffers(1, &RenderBuffer); // allocate a render buffer
-    glBindRenderbuffer(GL_RENDERBUFFER, RenderBuffer); // bind it
+// Once the texture is set up, we can turn to the Framebuffer
+    glGenFramebuffers(1, &FBO); // Allocate a FrameBuffer
+    glGenRenderbuffers(1, &RenderBuffer); // Allocate a render buffer
+    glBindRenderbuffer(GL_RENDERBUFFER, RenderBuffer); // And bind it
     glRenderbufferStorage(GL_RENDERBUFFER,
                           GL_DEPTH_COMPONENT16,
                           width,
-                          height); //give some parameters for it
-    glBindTexture(GL_TEXTURE_2D, ShadowTexture);  // bind the texture
-    glBindFramebuffer(GL_FRAMEBUFFER, FBO); // and the frame buffer
+                          height); // Give some parameters for it
+    glBindTexture(GL_TEXTURE_2D, ShadowTexture);// Bind the texture
+    glBindFramebuffer(GL_FRAMEBUFFER, FBO);     // and the frame buffer
 
     glFramebufferRenderbuffer(GL_FRAMEBUFFER,
                               GL_DEPTH_ATTACHMENT,
                               GL_RENDERBUFFER,
-                              RenderBuffer); // they are now attached
+                              RenderBuffer); // They are now attached
     glFramebufferTexture2D(GL_FRAMEBUFFER,
                            GL_COLOR_ATTACHMENT0,
                            GL_TEXTURE_2D,
                            ShadowTexture,
                            0); // and so is the texture that will be created
 
-    if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+    if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
         printf("oh bugger framebuffer not properly set up");
-    glActiveTexture(GL_TEXTURE0);// careful to not damage this
+        exit(EXIT_FAILURE);
+    }
+    glActiveTexture(GL_TEXTURE0);// Careful to not damage this
     return FBO;
 }
 

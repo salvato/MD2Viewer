@@ -40,8 +40,7 @@ public:
 	Game();
 	~Game();
 	
-	Graphics* MyGraphics; // create a 1 time instance of a graphics class;
-	Graphics::ObjectData object_data;
+    Graphics* MyGraphics;
 	
 	MyFiles	Handler;
 	std::vector<ObjectModel*> MyObjects;

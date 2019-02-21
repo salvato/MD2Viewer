@@ -32,7 +32,6 @@ EnemyManager::CreateEnemies(Game* TheGame) {
                                            &TheGame->MainModelManager);
                 En->SetPosition(Pos);
                 En->StoreGraphicClass(TheGame->MyGraphics);
-                TheGame->MyGraphics->Init(En);
                 En->TheGame =TheGame;
                 En->programObject = PO;
                 En->LoadSkin("Resources/Textures/TurretDroid.png", &TheGame->MainModelManager); // he does not auto load a skin
@@ -62,7 +61,6 @@ EnemyManager::CreateEnemies(Game* TheGame) {
                                             &TheGame->MainModelManager);
                 En->SetPosition(Pos);
                 En->StoreGraphicClass(TheGame->MyGraphics);
-                TheGame->MyGraphics->Init(En);
                 En->TheGame = TheGame;
                 En->programObject = PO;
                 En->LoadSkin("Resources/Textures/knight.png", &TheGame->MainModelManager); // he does not auto load a skin
@@ -92,7 +90,6 @@ EnemyManager::CreateEnemies(Game* TheGame) {
                                         &TheGame->MainModelManager);
             En->SetPosition(Pos);
             En->StoreGraphicClass(TheGame->MyGraphics);
-            TheGame->MyGraphics->Init(En);
             En->TheGame = TheGame;
             En->programObject = PO;
             En->LoadSkin("Resources/Textures/BattleDroid.png", &TheGame->MainModelManager); // he does not auto load a skin
