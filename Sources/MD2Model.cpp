@@ -8,7 +8,6 @@
 Main consructor for an MD2 style mo
 ***********************************************************/
 MD2Model::MD2Model(MyFiles* FH, const char *FN, ModelManager* MM) {
-    glGenVertexArrays(1, &vertexArrayID);
     glBindVertexArray(vertexArrayID);
     mTranslationMatrix	= glm::mat4(1.0f);
     mRotationMatrix		= glm::mat4(1.0f);
@@ -44,13 +43,11 @@ MD2Model::MD2Model() {
     pAnimation = new MD2Anim();
     pAnimation->SetSequence("stand", this);
     this->MyPhysObj = nullptr;
-    glGenVertexArrays(1, &vertexArrayID);
 }
 
 
 MD2Model::~MD2Model() {
     delete pAnimation;
-    glDeleteVertexArrays(1, &vertexArrayID);// G.S.
 }
 
 

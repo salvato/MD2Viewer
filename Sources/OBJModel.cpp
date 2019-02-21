@@ -26,8 +26,13 @@ but current shaders are going to ignore the colour value;
 Main consructor for an OBJ style ship
 ************************************************************/
 OBJModel::OBJModel(MyFiles* FH, const char* FN, ModelManager* MM)
-    : OBJModel()
 {
+    mTranslationMatrix	= glm::mat4(1.0f);
+    Amb[1] = Colour.g;
+    Amb[2] = Colour.b;
+    Amb[3] = 1.0f;
+    DegreeRotations = glm::vec3(0);
+    this->MyPhysObj = nullptr;
     MM->LoadOBJModel(this, FH, FN);
     TheModelManager = MM; // our draw will need this
 }
@@ -41,7 +46,6 @@ OBJModel::OBJModel()
 	Amb[2] = Colour.b;
 	Amb[3] = 1.0f;
 	DegreeRotations = glm::vec3(0);
-    glGenVertexArrays(1, &vertexArrayID);
     this->MyPhysObj = nullptr;
 }
 

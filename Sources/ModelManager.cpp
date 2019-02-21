@@ -115,8 +115,8 @@ ModelManager::LoadandConvert(std::vector<ObjectModel::DrawObject>* drawObjects,
         for(size_t m=0; m<materials.size(); m++) {
             tinyobj::material_t* mp = &materials[m];
             if(mp->diffuse_texname.length() > 0) {
-                char *cstr10 = &mp->diffuse_texname[0u]; // embarrasing side effect of the decision to use char.....
-                printf("# Texture name    : %s \n", cstr10);
+//                char *cstr10 = &mp->diffuse_texname[0u]; // embarrasing side effect of the decision to use char.....
+//                printf("# Texture name    : %s \n", cstr10);
 //                printf("# Size of Map     : %lu \n", textures.size());
                 // Only load the texture if it is not already loaded
                 if(textures.find(mp->diffuse_texname) == textures.end()) {

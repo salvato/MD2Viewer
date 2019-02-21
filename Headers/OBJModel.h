@@ -24,6 +24,5 @@ public:
     ModelManager* TheModelManager;	// for locating the textures and materials
 	float Amb[4];					// not always used but can be useful
 	glm::vec3 Speed;
-    GLuint vertexArrayID;
 };
 

@@ -122,7 +122,8 @@ public:
 // set up in the Game app. Make sure this is supplied
     Graphics* TheGraphics;
     Game* TheGame;
-//    GLuint	vbo;
+    GLuint	vbo;
+    GLuint vertexArrayID;
 
 // Bounding box info when we need to provide it, ModelManager does provide for OBJ types.
     float bmin[3];

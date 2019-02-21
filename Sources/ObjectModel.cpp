@@ -7,12 +7,12 @@
 // A base class, containing only information needed to position/rotate and create a model.
 //******************************************************************************************
 ObjectModel::ObjectModel() {
-    // really don't want these to do anything
+    glGenVertexArrays(1, &vertexArrayID);
 }
 
 
 ObjectModel::~ObjectModel() {
-    // really don't want these to do anything
+    glDeleteVertexArrays(1, &vertexArrayID);// G.S.
 }
 
 

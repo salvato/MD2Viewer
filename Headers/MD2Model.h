@@ -26,7 +26,6 @@ public:
     glm::vec3 Speed;
 
 protected:
-    GLuint vertexArrayID;
     GLint NextpositionLoc;
     GLint NextNormalLoc;
 };
