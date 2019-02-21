@@ -40,25 +40,24 @@ public:
 	Game();
 	~Game();
 	
-    Graphics* MyGraphics;
-	
-	MyFiles	Handler;
-	std::vector<ObjectModel*> MyObjects;
+    Graphics*     pMyGraphics;
+    MyFiles*      pHandler;
+    ModelManager* pMainModelManager; // all models are loaded and info stored here this managter is passed to objects created
+    Camera*	      pTheCamera;
+    EnemyManager* pEManager;
+    Font3D*       pFont;
 
-	Camera*	TheCamera;
     Camera* GetCamera() {
-		return TheCamera;
+        return pTheCamera;
 	}
 	
-    uint32_t ScreenX, ScreenY;
-    Font3D* pFont;
-	ModelManager MainModelManager; // all models are loaded and info stored here this managter is passed to objects created
-	EnemyManager EManager;
     bool Init();
     bool Update(float deltaTime);
     void Draw(Graphics::Target_State *p_state);
 	
-	float DeltaTimePassed; 
+    std::vector<ObjectModel*> MyObjects;
+    uint32_t ScreenX, ScreenY;
+    float DeltaTimePassed;
 		
 // Physics stuff
 // We need a simple means to create the physics data

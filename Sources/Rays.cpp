@@ -26,7 +26,7 @@ btVector3
 Rays::GetPickingRay(Game* TheGame) {
     double xpos, ypos;
     glfwPollEvents();
-    glfwGetCursorPos(TheGame->MyGraphics->state.nativewindow,
+    glfwGetCursorPos(TheGame->pMyGraphics->state.nativewindow,
                      &xpos,
                      &ypos);
     int x = int(floor(xpos));

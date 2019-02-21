@@ -9,6 +9,7 @@ Graphics::Graphics()
     : OurShaderManager(nullptr)
 {
     OurShaderManager = new ShaderManager();
+    init_ogl();
 }
 
 

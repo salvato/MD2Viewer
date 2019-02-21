@@ -31,7 +31,7 @@ main() {
     // reconstitute the depth
     float ActualDepth = (10.0-v_ShadowTexCoord.z) + 0.1 - fDepth ;
     if(fDepth > 0.0 && ActualDepth < 0.0) {
-        fLight = 0.6; // don't go totally dark, adjust range to suit, and
+        fLight = 0.2; // don't go totally dark, adjust range to suit, and
                       // perhaps have influenced by other light sources
     }
 

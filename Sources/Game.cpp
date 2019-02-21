@@ -1,15 +1,13 @@
-﻿/* 
-This is the game class, our project should run from here
-
-*/
+﻿//=========================================================
+// This is the game class, our project should run from here
+//=========================================================
 
 #include "Game.h"
 #include "OBJModel.h"
 #include "OffsetFollow.h"
 #include "Player.h"
 
-#include "Ground.h" // need this to turn an environment into physics
-#include "glm/gtx//quaternion.hpp"
+#include "Ground.h" // Needed to turn an environment into physics
 #include "Font3D.h"
 
 // Set size for your shadow buffer, it does have a speed impact
@@ -26,8 +24,9 @@ This is the game class, our project should run from here
 // Don't do anything special here, leave it to the init.
 // But do set up the OpenGL window stuff.
 Game::Game() {
-    MyGraphics = new Graphics(); // Will also create a ShaderManager
-    MyGraphics->init_ogl();      // Set our display window to screen size
+    pMyGraphics = new Graphics();// Set up the OpenGL window and create a ShaderManager
+    pHandler = new MyFiles();
+    pMainModelManager = new ModelManager();
     pFont = new Font3D();
 }
 
@@ -37,30 +36,33 @@ Game::~Game() {
         delete MyObjects[i];
     }
     MyObjects.clear();
-    delete TheCamera;
-    delete MyGraphics;
+    delete pTheCamera;
+    delete pFont;
+    delete pHandler;
+    delete pMainModelManager;
+    delete pMyGraphics;
 }
 
 
-// set up all the Game stuff needed
 bool
 Game::Init() {
 //=================================
-// Create a Player following Camera
+// Create a Player-Following Camera
 //=================================
-    float ratio = MyGraphics->state.width/MyGraphics->state.height;
-    TheCamera = new OffsetFollow(ratio);
+    float ratio = pMyGraphics->state.width/pMyGraphics->state.height;
+    pTheCamera = new OffsetFollow(ratio);
 //========================================
 // Prepare for printing text on the screen
 //========================================
-    pFont->PO = MyGraphics->
+    pFont->PO = pMyGraphics->
             OurShaderManager->
             MakeProgramObject("Resources/Shaders/textShader.vsh",
                               "Resources/Shaders/textShader.fsh",
-                              &Handler);
-    pFont->Init(MyGraphics->state.width,
-                MyGraphics->state.height,
+                              pHandler);
+    pFont->Init(pMyGraphics->state.width,
+                pMyGraphics->state.height,
                 "Resources/Fonts/atari-font.bmp");
+
 //=======================
 // Initialise our physics
 //=======================
@@ -77,70 +79,63 @@ Game::Init() {
 // Done physics initialization
 //============================
 
-//=========================================================================
-// create the simple shader for lines when we create our 1st physics object
-//=========================================================================
-    GLuint SimpleShader = MyGraphics->
-            OurShaderManager->
-            MakeProgramObject("Resources/Shaders/SimpleTri.vsh",
-                              "Resources/Shaders/SimpleTri.fsh",
-                              &Handler);
 //==================================================================
 // Here we would prepare any objects we want to create in our world
 // starting with the world
 //==================================================================
     glm::vec3 Pos;
-
-    Ground* Ruin = new Ground(&Handler,
-                              "Resources/Models/level00.obj",
-                              &MainModelManager);
-    Ruin->Scales = glm::vec3(1.0f);
-    Ruin->TheModelManager->GetBoundingBoxes(Ruin);
+    Ground* pRuin;
+    pRuin = new Ground(pHandler,
+                      "Resources/Models/Terrain-Water.obj",
+                      pMainModelManager);
+    pRuin->Scales = glm::vec3(1.0f);
+    pRuin->TheModelManager->GetBoundingBoxes(pRuin);
     Pos = glm::vec3(0.0, 0.0, 0.0f);
-    Ruin->SetPosition(Pos);
-    MyObjects.push_back(Ruin); // Now it's on the system for possible updates/draws
-    Ruin->StoreGraphicClass(MyGraphics);
-    Ruin->programObject =
-            MyGraphics->
+    pRuin->SetPosition(Pos);
+    MyObjects.push_back(pRuin); // Now it's on the system for possible updates/draws
+    pRuin->StoreGraphicClass(pMyGraphics);
+    pRuin->programObject =
+            pMyGraphics->
             OurShaderManager->
             MakeProgramObject("Resources/Shaders/ObjectVertWithShadows.vsh",
                               "Resources/Shaders/ObjectFragWithShadows.fsh",
-                              &Handler);
-    Ruin->TheGame = this;
+                              pHandler);
+    pRuin->TheGame = this;
 // it's going to be physics based so get his sizes
-    Ruin->TheModelManager->GetBoundingBoxes(Ruin);
+    pRuin->TheModelManager->GetBoundingBoxes(pRuin);
+
 //===================
 // Do a ground object
 //===================
-    PhysicsObj* Ground = CreatePhysicsObj(Ruin->mesh,
+    PhysicsObj* Ground = CreatePhysicsObj(pRuin->mesh,
                                           0, // mass
                                           btVector3(0.0f, 0.0f, 0.0f), // position
                                           btQuaternion(0.0f, 0.0f, 0.0f, 1.0f)); // no rotation
 // Once the object is created ensure we give it a user pointer.
 // It also helps if ObjectModel has a type
-    Ground->GetRigidBody()->setUserPointer(static_cast<ObjectModel*>(Ruin));
-    Ruin->WhatAmI = ObjectModel::e_GROUND;
+    Ground->GetRigidBody()->setUserPointer(static_cast<ObjectModel*>(pRuin));
+    pRuin->WhatAmI = ObjectModel::e_GROUND;
 
 //==============================
 // Now put our Player on the map
 //==============================
-    Pos = glm::vec3(-122.0, 16.0, 17.0f);
-    Player* AKnight = new Player(&Handler,
+    Pos = glm::vec3(-0.0, 0.0, 0.0f);
+    Player* AKnight = new Player(pHandler,
                                  "Resources/Models/knight.md2",
-                                 &MainModelManager);
+                                 pMainModelManager);
     MyObjects.push_back(AKnight); // It's now on the system for possible updates/draws
-    AKnight->StoreGraphicClass(MyGraphics);
+    AKnight->StoreGraphicClass(pMyGraphics);
     AKnight->TheGame = this;
-    AKnight->programObject = MyGraphics->
+    AKnight->programObject = pMyGraphics->
             OurShaderManager->
             MakeProgramObject("Resources/Shaders/MD2_Vertex.vsh",
                               "Resources/Shaders/MD2_Fragment.fsh",
-                              &Handler);
+                              pHandler);
     AKnight->LoadSkin("Resources/Textures/knight.png",
-                      &MainModelManager);// he does not auto load a skin
+                      pMainModelManager);// he does not auto load a skin
     AKnight->SetPosition(Pos);
-    AKnight->Scales = glm::vec3(0.15f);  // original models are quite large
-    MainModelManager.GetBoundingBoxes(AKnight);
+    AKnight->Scales = glm::vec3(0.10f);  // original models are quite large
+    pMainModelManager->GetBoundingBoxes(AKnight);
     AKnight->MyPhysObj = CreatePhysicsObj(AKnight->CreateMyShape(ObjectModel::CAPSULE),
                                           150, // mass 150kg
                                           btVector3(Pos.x, Pos.y, Pos.z),// Position}
@@ -159,7 +154,7 @@ Game::Init() {
 //========================================================
 // Now we have our ground and player, let's create baddies
 //========================================================
-    EManager.CreateEnemies(this);
+    pEManager->CreateEnemies(this);
 
 // Clear up the framebuffer
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -167,13 +162,13 @@ Game::Init() {
 // Objects can also cast shadows.
 // So lets make sure we have that shader available
 //================================================
-    MyGraphics->ShadowShader = MyGraphics->
+    pMyGraphics->ShadowShader = pMyGraphics->
             OurShaderManager->
             MakeProgramObject("Resources/Shaders/ShadowMap.vsh",
                               "Resources/Shaders/ShadowMap.fsh",
-                              &Handler);
+                              pHandler);
 // Make our frame buffer: let's make it a simple size
-    MyGraphics->ShadowFB = MyGraphics->CreateShadowBuffer(ShadowBufferSize,
+    pMyGraphics->ShadowFB = pMyGraphics->CreateShadowBuffer(ShadowBufferSize,
                                                           ShadowBufferSize);
 //=======================
 // Set up the draw system
@@ -199,12 +194,21 @@ Game::Init() {
         DBG_DrawNormals          = (1 << 14),
         DBG_MAX_DEBUG_DRAW_MODE
     };*/
-
     m_pPhysicsDrawer->setDebugMode(8);
     DynamicPhysicsWorld->setDebugDrawer(m_pPhysicsDrawer);
-// Now that we created them we can put a few more in here
+//=========================================================================
+// Create the simple shader for lines when we create our 1st physics object
+//=========================================================================
+    GLuint SimpleShader = pMyGraphics->
+            OurShaderManager->
+            MakeProgramObject("Resources/Shaders/SimpleTri.vsh",
+                              "Resources/Shaders/SimpleTri.fsh",
+                              pHandler);
     m_pPhysicsDrawer->ProgramObject = SimpleShader;
+
+//=============================================
 // World and Player set up, physics initialised
+//=============================================
     return true;
 }
 
@@ -215,12 +219,12 @@ Game::Update(float deltaTime) {
     DeltaTimePassed = deltaTime;
 
 // Get ready to cycle through any objects we made
-    TheCamera->Update(MyObjects[1]); // Player is number 1 Ground is 0
+    pTheCamera->Update(MyObjects[1]); // Player is number 1 Ground is 0
     DynamicPhysicsWorld->stepSimulation(1.0f/60.0f, 5);
 
 // If we are going to have shadows, we need to do a pass through all the
 // objects and do the draw shadow routines for anything that casts.
-    glBindFramebuffer(GL_FRAMEBUFFER, MyGraphics->ShadowFB);
+    glBindFramebuffer(GL_FRAMEBUFFER, pMyGraphics->ShadowFB);
     glViewport(0, 0, ShadowBufferSize, ShadowBufferSize);  // set to buffer size
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // clear
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -232,7 +236,7 @@ Game::Update(float deltaTime) {
 
 // Render to the screen buffer again.
 // Reset the viewport to screen size
-    glViewport(0, 0, MyGraphics->p_state->width, MyGraphics->p_state->height);
+    glViewport(0, 0, pMyGraphics->p_state->width, pMyGraphics->p_state->height);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     for(ulong i=0; i<MyObjects.size(); i++) {
         MyObjects[i]->Update();
@@ -259,10 +263,10 @@ Game::Update(float deltaTime) {
 #endif
 
 // After our draw we need to swap buffers to display
-    glfwSwapBuffers(MyGraphics->p_state->nativewindow);
+    glfwSwapBuffers(pMyGraphics->p_state->nativewindow);
     glfwPollEvents();
-    if((glfwGetKey(MyGraphics->state.nativewindow, GLFW_KEY_ESCAPE) == GLFW_PRESS) ||
-       (glfwWindowShouldClose(MyGraphics->state.nativewindow) != 0)) {
+    if((glfwGetKey(pMyGraphics->state.nativewindow, GLFW_KEY_ESCAPE) == GLFW_PRESS) ||
+       (glfwWindowShouldClose(pMyGraphics->state.nativewindow) != 0)) {
         return false;
     }
     return true;

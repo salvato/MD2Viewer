@@ -24,18 +24,18 @@ EnemyManager::CreateEnemies(Game* TheGame) {
     GLuint PO = TheGame->MyObjects[1]->programObject;
 
     for(int i=0; i<entries; i++) {
-        switch (Enemies[i].Type) {
+        switch(Enemies[i].Type) {
             case TURRET: {// Create a Turret
                 Pos = glm::vec3(Enemies[i].Xpos, Enemies[i].Ypos, Enemies[i].Zpos);
-                MD2Model* En= new MD2Model(&TheGame->Handler,
+                MD2Model* En= new MD2Model(TheGame->pHandler,
                                            "Resources/Models/TurretDroid.md2",
-                                           &TheGame->MainModelManager);
+                                           TheGame->pMainModelManager);
                 En->SetPosition(Pos);
-                En->StoreGraphicClass(TheGame->MyGraphics);
+                En->StoreGraphicClass(TheGame->pMyGraphics);
                 En->TheGame =TheGame;
                 En->programObject = PO;
-                En->LoadSkin("Resources/Textures/TurretDroid.png", &TheGame->MainModelManager); // he does not auto load a skin
-                En->Scales = glm::vec3(0.18f); // original models are quite large
+                En->LoadSkin("Resources/Textures/TurretDroid.png", TheGame->pMainModelManager); // he does not auto load a skin
+                En->Scales = glm::vec3(0.1f); // original models are quite large
                 En->TheModelManager->GetBoundingBoxes(En);
                 En->MyPhysObj = TheGame->
                         CreatePhysicsObj(En->CreateMyShape(ObjectModel::CYLINDER),
@@ -45,7 +45,7 @@ EnemyManager::CreateEnemies(Game* TheGame) {
                 En->MyPhysObj->
                         GetRigidBody()->
                         getCollisionShape()->
-                        setLocalScaling(btVector3(0.18f, 0.18f, 0.18f));
+                        setLocalScaling(btVector3(En->Scales.x, En->Scales.y, En->Scales.z));
                 En->MyPhysObj->
                         GetRigidBody()->
                         setUserPointer(static_cast<ObjectModel*>(En));
@@ -56,16 +56,16 @@ EnemyManager::CreateEnemies(Game* TheGame) {
             }// case TURRET
             case KNIGHT: {// Create a Droid
                 Pos = glm::vec3(Enemies[i].Xpos, Enemies[i].Ypos, Enemies[i].Zpos);
-                MD2Model* En = new MD2Model(&TheGame->Handler,
+                MD2Model* En = new MD2Model(TheGame->pHandler,
                                             "Resources/Models/knight.md2",
-                                            &TheGame->MainModelManager);
+                                            TheGame->pMainModelManager);
                 TheGame->MyObjects.push_back(En); // place on the system for possible updates/draws
-                En->StoreGraphicClass(TheGame->MyGraphics);
+                En->StoreGraphicClass(TheGame->pMyGraphics);
                 En->TheGame = TheGame;
                 En->programObject = PO;
-                En->LoadSkin("Resources/Textures/knight.png", &TheGame->MainModelManager); // he does not auto load a skin
+                En->LoadSkin("Resources/Textures/knight.png", TheGame->pMainModelManager); // he does not auto load a skin
                 En->SetPosition(Pos);
-                En->Scales = glm::vec3(0.18f); // original models are quite large
+                En->Scales = glm::vec3(0.1f); // original models are quite large
                 En->TheModelManager->GetBoundingBoxes(En);
                 En->MyPhysObj = TheGame->
                         CreatePhysicsObj(En->CreateMyShape(ObjectModel::CYLINDER),
@@ -75,7 +75,7 @@ EnemyManager::CreateEnemies(Game* TheGame) {
                 En->MyPhysObj->
                         GetRigidBody()->
                         getCollisionShape()->
-                        setLocalScaling(btVector3(0.18f, 0.18f, 0.18f));
+                        setLocalScaling(btVector3(En->Scales.x, En->Scales.y, En->Scales.z));
                 En->MyPhysObj->
                         GetRigidBody()->
                         setUserPointer(static_cast<ObjectModel*>(En));
@@ -85,16 +85,16 @@ EnemyManager::CreateEnemies(Game* TheGame) {
             }// case KNIGHT
             case BATTLE: {// Create a BattleDroid
                 Pos = glm::vec3(Enemies[i].Xpos, Enemies[i].Ypos, Enemies[i].Zpos);
-                MD2Model* En = new MD2Model(&TheGame->Handler,
+                MD2Model* En = new MD2Model(TheGame->pHandler,
                                             "Resources/Models/BattleDroid.md2",
-                                            &TheGame->MainModelManager);
+                                            TheGame->pMainModelManager);
                 TheGame->MyObjects.push_back(En); // place on the system for possible updates/draws
-                En->StoreGraphicClass(TheGame->MyGraphics);
+                En->StoreGraphicClass(TheGame->pMyGraphics);
                 En->TheGame = TheGame;
                 En->programObject = PO;
-                En->LoadSkin("Resources/Textures/BattleDroid.png", &TheGame->MainModelManager); // he does not auto load a skin
+                En->LoadSkin("Resources/Textures/BattleDroid.png", TheGame->pMainModelManager); // he does not auto load a skin
                 En->SetPosition(Pos);
-                En->Scales = glm::vec3(0.18f); // original models are quite large
+                En->Scales = glm::vec3(0.1f); // original models are quite large
                 En->TheModelManager->GetBoundingBoxes(En);
                 En->MyPhysObj = TheGame->
                         CreatePhysicsObj(En->CreateMyShape(ObjectModel::CYLINDER),
@@ -104,7 +104,7 @@ EnemyManager::CreateEnemies(Game* TheGame) {
                 En->MyPhysObj->
                         GetRigidBody()->
                         getCollisionShape()->
-                        setLocalScaling(btVector3(0.18f, 0.18f, 0.18f));
+                        setLocalScaling(btVector3(En->Scales.x, En->Scales.y, En->Scales.z));
                 En->MyPhysObj->
                         GetRigidBody()->
                         setUserPointer(static_cast<ObjectModel*>(En));

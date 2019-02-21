@@ -31,12 +31,11 @@ enum Types {
 // our EnemyManager class can instantiate these.
 static
 EnemyData Enemies[] = {
-    EnemyData(-157, 15, 30, BATTLE),
-    EnemyData(-120, 15, 30, BATTLE),
-    EnemyData(-120, 15, -1, TURRET),
-    EnemyData(-132, 15, -1, BATTLE),
-    EnemyData(-124, 15, -1, TURRET),
-    EnemyData(-126, 15, -1, TURRET),
-    EnemyData(-128, 15, -1, TURRET),
-    EnemyData(-130, 15, -1, TURRET)
+    EnemyData(-30, 10, -5, BATTLE),
+    EnemyData(-30, 11,  5, BATTLE),
+    EnemyData(-30, 12, 10, TURRET),
+    EnemyData(-10, 13, 10, BATTLE),
+    EnemyData( 10, 14,  5, TURRET),
+    EnemyData( 15, 15,  0, TURRET),
+    EnemyData(-25, 1, -25, TURRET)
 };

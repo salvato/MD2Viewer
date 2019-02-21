@@ -21,7 +21,6 @@ public:
 	~Graphics();
 	
 public:
-    void init_ogl();
     GLuint CreateShadowBuffer(int width, int height);
 
 public:
@@ -40,4 +39,7 @@ public:
     GLuint	ShadowFB;	 // our framebuffer for shadows
     GLuint	ShadowShader;// our standard shadow shader
     GLuint	ShadowTexture;//
+
+protected:
+    void init_ogl();
 };

@@ -14,7 +14,7 @@ Player::Player(MyFiles* FH, const char* FN, ModelManager* MM)
 bool
 Player::Update() {
     MyPhysObj->GetRigidBody()->setActivationState(DISABLE_DEACTIVATION);
-    bool trigger = false; // assume a false trigger
+    bool trigger = false; // Assume a false trigger
 // Override the X and Z angular velocties to prevent toppling.
     btVector3 angl = btVector3(0, 0, 0);
     MyPhysObj->GetRigidBody()->setAngularFactor(angl);
@@ -42,8 +42,10 @@ Player::Update() {
     TheGame->pFont->PrintText(buffer, 20, 156+16);
 
     btScalar PMargin = MyPhysObj->GetShape()->getMargin();
-    Ground* TheG = static_cast<Ground*>(TheGame->MyObjects[0]);
-    btScalar GMargin = 	TheG->mesh->getMargin();
+
+    Ground* TheGround = static_cast<Ground*>(TheGame->MyObjects[0]);
+    btScalar GMargin = 	TheGround->mesh->getMargin();
+
     sprintf(buffer, "Player Margin:-%f  / Ground Margin:- %f",
             double(PMargin),
             double(GMargin));
@@ -85,7 +87,7 @@ Player::Update() {
         btVector3 vel =	MyPhysObj->GetRigidBody()->getLinearVelocity();
         vel.setX(0);
         vel.setZ(0);
-        MyPhysObj->GetRigidBody()->setLinearVelocity(vel+(Forward*1.5));
+        MyPhysObj->GetRigidBody()->setLinearVelocity(vel+(Forward*15));
         MyPhysObj->GetRigidBody()->setRestitution(0);
         MyPhysObj->GetRigidBody()->setFriction(1.5f);
         trigger = true;
@@ -97,20 +99,20 @@ Player::Update() {
                                 MD2Anim::TRIGGER,
                                 1.0f/60.0f,
                                 "stand");
-        MyPhysObj->GetRigidBody()->setLinearVelocity(Forward * -0.6f);
+        MyPhysObj->GetRigidBody()->setLinearVelocity(Forward * -6.0f);
         MyPhysObj->GetRigidBody()->setFriction(0.5f);
         trigger = true;
     }
 
 // Not very physics based but lets orient
     if(glfwGetKey(TheGraphics->state.nativewindow, GLFW_KEY_LEFT) == GLFW_PRESS) {
-        btQuaternion AddVal = btQuaternion(btVector3(0, 1, 0), glm::radians(0.25f));
+        btQuaternion AddVal = btQuaternion(btVector3(0.0f, 1.0f, 0.0f), glm::radians(0.5f));
         MyPhysObj->SetOrientation(Current*AddVal);
         trigger = true;
     }
 
     if(glfwGetKey(TheGraphics->state.nativewindow, GLFW_KEY_RIGHT) == GLFW_PRESS) {
-        btQuaternion AddVal = btQuaternion(btVector3(0, 1, 0), glm::radians(-0.25f));
+        btQuaternion AddVal = btQuaternion(btVector3(0.0f, 1.0f, 0.0f), glm::radians(-0.5f));
         MyPhysObj->SetOrientation(Current*AddVal);
         trigger = true;
     }
@@ -131,9 +133,9 @@ Remember these only handle actual collision and separation
 void
 Player::HandleCollision(const ObjectModel *WhatDidIHit) {
     (void)WhatDidIHit;
-        printf("I hit some something\n");
-        if(WhatDidIHit->WhatAmI == ObjectModel::e_GROUND)
-            printf("I hit da ground dude\n");
+//        printf("I hit some something\n");
+//        if(WhatDidIHit->WhatAmI == ObjectModel::e_GROUND)
+//            printf("I hit da ground dude\n");
 }
 
 
@@ -141,9 +143,9 @@ Player::HandleCollision(const ObjectModel *WhatDidIHit) {
 void
 Player::HandleSeparation(const ObjectModel* WhatDidIHit) {
     (void)WhatDidIHit;
-        printf("I have separated from something\n");
-        if (WhatDidIHit->WhatAmI == ObjectModel::e_GROUND)
-            printf("I have separated from ground dude\n");
+//        printf("I have separated from something\n");
+//        if (WhatDidIHit->WhatAmI == ObjectModel::e_GROUND)
+//            printf("I have separated from ground dude\n");
 }
 
 
@@ -151,6 +153,6 @@ Player::HandleSeparation(const ObjectModel* WhatDidIHit) {
 void
 Player::HandleContact(const ObjectModel *WhatDidIHit) {
     (void)WhatDidIHit;
-        if (WhatDidIHit->WhatAmI == ObjectModel::e_GROUND)
-            printf("I am in contact with the ground\n");
+//        if (WhatDidIHit->WhatAmI == ObjectModel::e_GROUND)
+//            printf("I am in contact with the ground\n");
 }
