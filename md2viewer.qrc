@@ -22,5 +22,6 @@
         <file>Resources/Textures/TurretDroid.png</file>
         <file>Resources/Fonts/atari-font.bmp</file>
         <file>Resources/Material/level00.mtl</file>
+        <file>Resources/Models/ruin2_walled.obj</file>
     </qresource>
 </RCC>

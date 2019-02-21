@@ -86,7 +86,7 @@ Game::Init() {
     glm::vec3 Pos;
     Ground* pRuin;
     pRuin = new Ground(pHandler,
-                      "Resources/Models/Terrain-Water.obj",
+                      "Resources/Models/ruin2_walled.obj",
                       pMainModelManager);
     pRuin->Scales = glm::vec3(1.0f);
     pRuin->TheModelManager->GetBoundingBoxes(pRuin);
