@@ -27,5 +27,6 @@
         <file>Resources/Textures/rock.png</file>
         <file>Resources/Textures/stone_floor.png</file>
         <file>Resources/Textures/stone_wall.png</file>
+        <file>Resources/Material/ruin2_walled.mtl</file>
     </qresource>
 </RCC>
