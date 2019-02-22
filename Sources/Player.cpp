@@ -82,7 +82,7 @@ Player::Update() {
         pAnimation->SetSequence("run",
                                 this,
                                 MD2Anim::TRIGGER,
-                                1.0f/60,
+                                4.0f/60,
                                 "stand");
         btVector3 vel =	MyPhysObj->GetRigidBody()->getLinearVelocity();
         vel.setX(0);
@@ -97,7 +97,7 @@ Player::Update() {
         pAnimation->SetSequence("crwalk",
                                 this,
                                 MD2Anim::TRIGGER,
-                                1.0f/60.0f,
+                                5.0f/60.0f,
                                 "stand");
         MyPhysObj->GetRigidBody()->setLinearVelocity(Forward * -6.0f);
         MyPhysObj->GetRigidBody()->setFriction(0.5f);
