@@ -21,8 +21,8 @@ functionality should be included in the derived class
 
 
 #define PI			3.14159265358979323846264338327950288419716939937510582097494459072381640628620899862803482534211706798f
-#define DEG2RAD(x) (x*PI)/180
-#define RAD2DEG(x) x*(180/PI)
+#define DEG2RAD(x) (x*PI)/180.0f
+#define RAD2DEG(x) x*(180.0f/PI)
 
 class Graphics;
 class Game;

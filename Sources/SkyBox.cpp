@@ -41,18 +41,35 @@ SkyBox::Init() {
 
 bool
 SkyBox::Update() {
-// get these from the camera
+// Set up model view
+    DegreeRotations.x += TheGame->DeltaTimePassed*0.1f;
+    Rotations.x = DEG2RAD(DegreeRotations.x);
+    DegreeRotations.y -= TheGame->DeltaTimePassed*0.1f;
+    Rotations.y = DEG2RAD(DegreeRotations.y);
+    DegreeRotations.z += TheGame->DeltaTimePassed*0.1f;
+    Rotations.z = DEG2RAD(DegreeRotations.z);
+
+    MakeRotationMatrix();
+    MakeTranslationMatrix();
+    MakeModelMatrix();
+
+    // get these from the camera
     glm::mat4* View       = TheGame->GetCamera()->GetView();
     glm::mat4* Projection = TheGame->GetCamera()->GetProjection();
-// make the MVP
-    glm::mat4 MVP   = *Projection * *View; // Remember order seems backwards
+    // make the MVP
+    glm::mat4 MVP   = *Projection * *View * Model; // Remember order seems backwards
+
     glUseProgram(programObject);
-// Send our transformation to the currently bound shader,
-// in the "MVP" uniform
+
+    // Send our transformation to the currently bound shader,
+    // in the "MVP" uniform
     glUniformMatrix4fv(PVM, 1, GL_FALSE, &MVP[0][0]);
+
     float Amb[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
     glUniform4fv(AmbID, 1, &Amb[0]);
+
     glUseProgram(0);
+
     return true;
 }
 

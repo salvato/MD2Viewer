@@ -269,7 +269,7 @@ Game::Update(float deltaTime) {
     glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &VP[0][0]);
     m_pPhysicsDrawer->DoDebugDraw(); // useful but very slow, take note!
 */
-// render text as needed
+// Render text as needed
 #ifdef SHOW_TEXT
     pFont->RenderText();
 #endif

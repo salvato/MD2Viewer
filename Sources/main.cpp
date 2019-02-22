@@ -78,7 +78,7 @@ main() {
     gettimeofday(&t1, &tz);
     while(true) {
         gettimeofday(&t2, &tz);
-        deltatime = float(t2.tv_sec-t1.tv_sec + (t2.tv_usec-t1.tv_usec)*0.0000001f);
+        deltatime = float(t2.tv_sec-t1.tv_sec + (t2.tv_usec-t1.tv_usec)*1.0e-6f);
         t1 = t2;
 // Here it is where the magic happens !
 // If Update() ever returns false the Game is Over
