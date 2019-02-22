@@ -17,30 +17,12 @@ SkyBox::~SkyBox() {
 bool
 SkyBox::Init() {
     SetModelMatrix();
-
     glBindVertexArray(vertexArrayID);
-    //move the vertices into a vbo careful this will repeat
-    glGenBuffers(1, &vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER,
-                 36*5*sizeof(GLfloat),
-                 Vertices,
-                 GL_STATIC_DRAW
-    );
-    glVertexAttribPointer(GLuint(vertexLoc),
-                          3,
-                          GL_FLOAT,
-                          GL_FALSE,
-                          5*sizeof(GLfloat),
-                          nullptr
-    );
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-    vertexLoc = glGetAttribLocation(programObject, "vertex");
+    positionLoc = glGetAttribLocation(programObject, "vertex");
     PVM       = glGetUniformLocation(programObject, "PVM");
-    //    AmbID     = glGetUniformLocation(programObject, "ambient");
-    if((vertexLoc == -1) ||
-//       (AmbID     == -1) ||
+    AmbID     = glGetUniformLocation(programObject, "ambient");
+    if((positionLoc == -1) ||
+       (AmbID     == -1) ||
        (PVM       == -1))
     {
         printf("Unable to get Shader Variables locations\n");
@@ -59,35 +41,18 @@ SkyBox::Init() {
 
 bool
 SkyBox::Update() {
-    //set up model view
-    DegreeRotations.x += 0.01f;
-    Rotations.x = DEG2RAD(DegreeRotations.x);
-    DegreeRotations.y -= 0.01f;
-    Rotations.y = DEG2RAD(DegreeRotations.y);
-    DegreeRotations.z += 0.01f;
-    Rotations.z = DEG2RAD(DegreeRotations.z);
-
-    MakeRotationMatrix();
-    MakeTranslationMatrix();
-    MakeModelMatrix();
-
-    // get these from the camera
+// get these from the camera
     glm::mat4* View       = TheGame->GetCamera()->GetView();
     glm::mat4* Projection = TheGame->GetCamera()->GetProjection();
-    // make the MVP
-    glm::mat4 MVP   = *Projection * *View * Model; // Remember order seems backwards
-
+// make the MVP
+    glm::mat4 MVP   = *Projection * *View; // Remember order seems backwards
     glUseProgram(programObject);
-
-    // Send our transformation to the currently bound shader,
-    // in the "MVP" uniform
+// Send our transformation to the currently bound shader,
+// in the "MVP" uniform
     glUniformMatrix4fv(PVM, 1, GL_FALSE, &MVP[0][0]);
-
-//    float Amb[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
-//    glUniform4fv(AmbID, 1, &Amb[0]);
-
+    float Amb[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
+    glUniform4fv(AmbID, 1, &Amb[0]);
     glUseProgram(0);
-
     return true;
 }
 
@@ -99,13 +64,22 @@ SkyBox::Draw() {
     glDepthFunc(GL_LEQUAL);
 
     glBindVertexArray(vertexArrayID);
-    glEnableVertexAttribArray(GLuint(vertexLoc));
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glVertexAttribPointer(GLuint(positionLoc),
+                          3,// 3 values
+                          GL_FLOAT,
+                          GL_FALSE,
+                          sizeof(GLfloat)*5,// stride
+                          static_cast<void*>(nullptr)
+    );
+    glEnableVertexAttribArray(GLuint(positionLoc));
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_CUBE_MAP, texture1);
     glDrawArrays(GL_TRIANGLES, 0, 36);
 
     glUseProgram(0);
     glBindVertexArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
     glDepthFunc(GL_LESS);
     return true;
 }

@@ -4,7 +4,8 @@
 #include "Game.h"
 
 
-static GLfloat CubeVertices[] = { // it's a cube model so it needs to know what a cube looks like
+static GLfloat
+CubeVertices[] = { // it's a cube model so it needs to know what a cube looks like
     -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
      0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
      0.5f,  0.5f, -0.5f,  1.0f, 1.0f,

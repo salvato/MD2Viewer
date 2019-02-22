@@ -23,5 +23,4 @@ private:
     GLint PVM;
     GLint AmbID;
     GLint skyBoxLoc;
-    GLint vertexLoc;
 };

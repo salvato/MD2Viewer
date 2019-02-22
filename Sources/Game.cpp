@@ -6,6 +6,7 @@
 #include "OBJModel.h"
 #include "OffsetFollow.h"
 #include "Player.h"
+#include "SkyBox.h"
 
 #include "Ground.h" // Needed to turn an environment into physics
 #include "Font3D.h"
@@ -150,6 +151,17 @@ Game::Init() {
             GetRigidBody()->
             setUserPointer(static_cast<ObjectModel*>(AKnight));
     AKnight->WhatAmI = ObjectModel::e_PLAYER;
+
+    SkyBox* pSky = new SkyBox(pHandler);
+    pSky->programObject = pMyGraphics->
+                          OurShaderManager->
+                          MakeProgramObject("Resources/Shaders/SkyBoxVert.vsh",
+                                            "Resources/Shaders/SkyBoxFrag.fsh",
+                                            pHandler);
+    pSky->StoreGraphicClass(pMyGraphics);
+    pSky->TheGame = this;
+    pSky->Init();
+    MyObjects.push_back(pSky);
 
 //========================================================
 // Now we have our ground and player, let's create baddies
