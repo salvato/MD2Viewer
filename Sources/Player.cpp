@@ -7,7 +7,7 @@ Player::Player(MyFiles* FH, const char* FN, ModelManager* MM)
     : MD2Model(FH, FN, MM)
 {
     pAnimation->SetSequence("stand", this);
-    Forward = btVector3(0, 0, 0); // make sure we have an initital vector
+    Forward = btVector3(0, 0, 0); // Make sure we have an initital vector
 }
 
 
@@ -55,7 +55,7 @@ Player::Update() {
     int	 numManifolds = this->TheGame->Dispatcher->getNumManifolds();
 
 //===============================
-// do what ever logic needs doing
+// Do what ever logic needs doing
 //===============================
 
     glfwPollEvents();
@@ -82,12 +82,12 @@ Player::Update() {
         pAnimation->SetSequence("run",
                                 this,
                                 MD2Anim::TRIGGER,
-                                4.0f/60,
+                                8.0f/60,
                                 "stand");
         btVector3 vel =	MyPhysObj->GetRigidBody()->getLinearVelocity();
         vel.setX(0);
         vel.setZ(0);
-        MyPhysObj->GetRigidBody()->setLinearVelocity(vel+(Forward*15));
+        MyPhysObj->GetRigidBody()->setLinearVelocity(vel+(Forward*2.5));
         MyPhysObj->GetRigidBody()->setRestitution(0);
         MyPhysObj->GetRigidBody()->setFriction(1.5f);
         trigger = true;
@@ -99,7 +99,7 @@ Player::Update() {
                                 MD2Anim::TRIGGER,
                                 5.0f/60.0f,
                                 "stand");
-        MyPhysObj->GetRigidBody()->setLinearVelocity(Forward * -6.0f);
+        MyPhysObj->GetRigidBody()->setLinearVelocity(Forward * -2.0f);
         MyPhysObj->GetRigidBody()->setFriction(0.5f);
         trigger = true;
     }

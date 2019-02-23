@@ -63,7 +63,8 @@ SOURCES += \
     Sources/TextureManager.cpp \
     Sources/TinyObjectLoader.cpp \
     Sources/CubeModel.cpp \
-    Sources/SkyBox.cpp
+    Sources/SkyBox.cpp \
+    Sources/GameValues.cpp
 
 HEADERS += \
     Headers/BinaryReader.h \
@@ -95,7 +96,8 @@ HEADERS += \
     Headers/TextureManager.h \
     Headers/tiny_obj_loader.h \
     Headers/CubeModel.h \
-    Headers/SkyBox.h
+    Headers/SkyBox.h \
+    Headers/GameValues.h
 
 RESOURCES += \
     md2viewer.qrc

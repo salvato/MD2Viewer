@@ -1,15 +1,11 @@
-// simple access to the Physics info
+// Simple access to the Physics info
 #include "PhysicsObj.h"
-
-
-GameValues::~GameValues()
-{}
 
 
 PhysicsObj::PhysicsObj (btCollisionShape* Shape,
 	float mass,
-	const btVector3 &Position,  // these have defaults if needed
-	const btQuaternion &Rotation)
+    const btVector3    &Position,// These have defaults
+    const btQuaternion &Rotation)// if needed
 {
 // We have to create a startup transform
 	btTransform transform;
@@ -19,20 +15,21 @@ PhysicsObj::PhysicsObj (btCollisionShape* Shape,
 // This new info needs to create the Game Values
 	m_Status = new GameValues(transform);
 	m_Shape = Shape;
-// set up inertia, start with 0, and test if we have an infinite mass(0.0),
+// Set up inertia, start with 0, and test if we have an infinite mass(0.0),
 // if so, no inertia is possible
 	btVector3 Inertia(0, 0, 0);
 	if (mass != 0.0f)
 		m_Shape->calculateLocalInertia(mass, Inertia);
-//make a new RB with this info
+// Make a new Rigid Body with this info
 	btRigidBody::btRigidBodyConstructionInfo RBinfo(mass,m_Status,m_Shape,Inertia);
 	m_Body = new btRigidBody(RBinfo);
-// and were done, there's no error reporitn in Bullet so we just have to assume its ok
+// And were done, there's no error reporting in Bullet
+// so we just have to assume it's ok
 }
 
 
 PhysicsObj::~PhysicsObj() {
-// remove the things we made
+// Remove the things we made
 	delete m_Body;
 	delete m_Shape;
 	delete m_Status;

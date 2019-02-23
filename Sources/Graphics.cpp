@@ -39,12 +39,13 @@ Graphics::init_ogl() {
 
     state.width  = pMode->width;
     state.height = pMode->height;
+
     state.nativewindow = glfwCreateWindow(state.width,
                                           state.height,
                                           "Tutorial",
-                                          nullptr,
-                                          nullptr
-                         );
+                                          glfwGetPrimaryMonitor(),
+                                          nullptr);
+
     if(state.nativewindow == nullptr) {
         printf("Failed to open GLFW window.\n");
         glfwTerminate();
@@ -52,7 +53,7 @@ Graphics::init_ogl() {
     }
     glfwMakeContextCurrent(state.nativewindow);
 
-    // Initialize GLEW
+// Initialize GLEW
     glewExperimental = true; // Needed for core profile
     if (glewInit() != GLEW_OK) {
         printf("Failed to initialize GLEW\n");
@@ -60,20 +61,20 @@ Graphics::init_ogl() {
         exit(EXIT_FAILURE);
     }
 
-    // glewInit() will generate a GL_INVALID_ENUM error if used with a core profile context.
-    // It calls glGetString(GL_EXTENSIONS) to get the extension list, but this will generate
-    // GL_INVALID_ENUM with the core profile, where glGetStringi() must be used instead.
+// glewInit() will generate a GL_INVALID_ENUM error if used with a core profile context.
+// It calls glGetString(GL_EXTENSIONS) to get the extension list, but this will generate
+// GL_INVALID_ENUM with the core profile, where glGetStringi() must be used instead.
     while(true) {
         if(glGetError() == GL_NO_ERROR)
             break;
     }
 
-    // Ensure we can capture the escape key being pressed below
+// Ensure we can capture the escape key being pressed below
     glfwSetInputMode(state.nativewindow, GLFW_STICKY_KEYS, GL_TRUE);
-    // Hide the mouse and enable unlimited mouvement
+// Hide the mouse and enable unlimited mouvement
     //>>glfwSetInputMode(state.nativewindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-    // Set the mouse at the center of the screen
+// Set the mouse at the center of the screen
     glfwPollEvents();
     glfwSetCursorPos(state.nativewindow, state.width/2, state.height);
 
@@ -81,7 +82,7 @@ Graphics::init_ogl() {
     glEnable(GL_DEPTH_TEST);
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-	// Setup the viewport
+// Setup the viewport
     glViewport(0, 0, state.width, state.height);
 }
 

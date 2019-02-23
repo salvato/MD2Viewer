@@ -71,10 +71,14 @@ Game::Init() {
     CollisionConfiguration = new btDefaultCollisionConfiguration();
     Dispatcher             = new btCollisionDispatcher(CollisionConfiguration);
     ConstraintSolver       = new btSequentialImpulseConstraintSolver();
+
+// DynamicPhysicsWorld() manages all physics objects and constraints.
+// It also implements the update of all objects each frame.
     DynamicPhysicsWorld    = new btDiscreteDynamicsWorld(Dispatcher,
                                                          BroadPhase,
                                                          ConstraintSolver,
                                                          CollisionConfiguration);
+
     DynamicPhysicsWorld->setGravity(btVector3(0.0f, -9.81f, 0.0f));
 //============================
 // Done physics initialization
@@ -93,7 +97,7 @@ Game::Init() {
     pRuin->TheModelManager->GetBoundingBoxes(pRuin);
     Pos = glm::vec3(0.0, 0.0, 0.0f);
     pRuin->SetPosition(Pos);
-    MyObjects.push_back(pRuin); // Now it's on the system for possible updates/draws
+    MyObjects.push_back(pRuin);// Now it's on the system for possible updates/draws
     pRuin->StoreGraphicClass(pMyGraphics);
     pRuin->programObject =
             pMyGraphics->
@@ -102,7 +106,7 @@ Game::Init() {
                               "Resources/Shaders/ObjectFragWithShadows.fsh",
                               pHandler);
     pRuin->TheGame = this;
-// it's going to be physics based so get his sizes
+// It's going to be physics based so get his sizes
     pRuin->TheModelManager->GetBoundingBoxes(pRuin);
 
 //===================
