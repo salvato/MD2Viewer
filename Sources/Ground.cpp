@@ -1,4 +1,4 @@
-// This is only here to create and display the environent
+﻿// This is only here to create and display the environent
 
 #include "Ground.h"
 #include "MyFiles.h"
@@ -25,7 +25,9 @@ Ground::Ground(MyFiles* FH, const char *FN, ModelManager* MM) {
                                          CollisionMesh[i+1],
                                          CollisionMesh[i+2]);
 	}
-// store for when we make a new object
+// For static world environments btBvhTriangleMeshShape()
+// is a very efficient way to represent static triangle meshes.
+// It builds an internal acceleration structure from a btTriangleMesh()
     mesh = new btBvhTriangleMeshShape(triangleMeshTerrain, true);
     CollisionMesh.clear(); // We are done with this now
 }

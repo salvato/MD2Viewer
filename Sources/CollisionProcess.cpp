@@ -2,11 +2,11 @@
 #include "Game.h"
 
 //================================
-// only valid with Bullet Physics.
+// Only valid with Bullet Physics.
 //================================
 
-// Provides a means to respond to collisions, seperations and contact events
-// contact events may not be needed so could be removed
+// Provides a means to respond to collisions, separations and contact events
+// Contact events may not be needed so could be removed
 
 
 CollisionProcess::CollisionProcess()
@@ -19,7 +19,8 @@ CollisionProcess::~CollisionProcess()
 
 void
 CollisionProcess::CheckForCollision(Game* TheGame) {
-// Keep a list of the collision pairs we find during the current update
+// Keep a list of the collision pairs
+// we find during the current update
     ManifoldPairs pairsThisFrame;
     ManifoldPairs CollisionsThisFrame;
 
@@ -132,11 +133,12 @@ void
 CollisionProcess::ContactEvent(const btRigidBody* RB0, const btRigidBody* RB1) {
 // This isn't a just hit or a just separated, its an actual contact,
 // useful for testing floor.
-// This event is done after collision and seperations which can be
+// This event is done after collision and separations which can be
 // useful to test for small bumps
-     // Assumes we set up the user pointer with an ObjectModel*
+
+// Assumes we set up the user pointer with an ObjectModel*
     ObjectModel* First = reinterpret_cast<ObjectModel*>(RB0->getUserPointer());
-    // and there are handling routines in ObjectModel or overrides in derived
+// and there are handling routines in ObjectModel or overrides in derived
     ObjectModel* Second = reinterpret_cast<ObjectModel*>(RB1->getUserPointer());
 
     if (First == nullptr || Second == nullptr)

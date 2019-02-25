@@ -27,7 +27,7 @@ EnemyManager::CreateEnemies(Game* TheGame) {
         switch(Enemies[i].Type) {
             case TURRET: {// Create a Turret
                 Pos = glm::vec3(Enemies[i].Xpos, Enemies[i].Ypos, Enemies[i].Zpos);
-                MD2Model* En= new MD2Model(TheGame->pHandler,
+                MD2Model* En= new MD2Model(TheGame->pFileHandler,
                                            "Resources/Models/TurretDroid.md2",
                                            TheGame->pMainModelManager);
                 En->SetPosition(Pos);
@@ -56,7 +56,7 @@ EnemyManager::CreateEnemies(Game* TheGame) {
             }// case TURRET
             case KNIGHT: {// Create a Droid
                 Pos = glm::vec3(Enemies[i].Xpos, Enemies[i].Ypos, Enemies[i].Zpos);
-                MD2Model* En = new MD2Model(TheGame->pHandler,
+                MD2Model* En = new MD2Model(TheGame->pFileHandler,
                                             "Resources/Models/knight.md2",
                                             TheGame->pMainModelManager);
                 TheGame->MyObjects.push_back(En); // place on the system for possible updates/draws
@@ -85,7 +85,7 @@ EnemyManager::CreateEnemies(Game* TheGame) {
             }// case KNIGHT
             case BATTLE: {// Create a BattleDroid
                 Pos = glm::vec3(Enemies[i].Xpos, Enemies[i].Ypos, Enemies[i].Zpos);
-                MD2Model* En = new MD2Model(TheGame->pHandler,
+                MD2Model* En = new MD2Model(TheGame->pFileHandler,
                                             "Resources/Models/BattleDroid.md2",
                                             TheGame->pMainModelManager);
                 TheGame->MyObjects.push_back(En); // place on the system for possible updates/draws

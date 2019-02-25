@@ -3,7 +3,7 @@
 #include "OBJModel.h"
 
 
-// simple class mainly here to allow us to control an
+// Simple class mainly here to allow us to control an
 // OBJModel type Object and get its mesh
 class Ground : public OBJModel
 {

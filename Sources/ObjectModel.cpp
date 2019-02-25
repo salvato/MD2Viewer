@@ -1,11 +1,13 @@
+//****************************************************
+// A base class, containing only information needed to
+// position/rotate and create a model.
+//****************************************************
+
 #include "ObjectModel.h"
 #include "Graphics.h"
 #include <bullet/btBulletDynamicsCommon.h>
 
 
-//******************************************************************************************
-// A base class, containing only information needed to position/rotate and create a model.
-//******************************************************************************************
 ObjectModel::ObjectModel() {
     glGenVertexArrays(1, &vertexArrayID);
 }
@@ -24,20 +26,21 @@ ObjectModel::LoadModel(GLvoid* a_Vertices) {
 }
 
 
-// Create the model by load the rotations/positions/scale matrices
+// Make the Model matrix by loading
+// the rotations/positions/scale matrices
 void
 ObjectModel::SetModelMatrix() {
-    //set the matrices we use to I
+//set the matrices we use to I
     mTranslationMatrix	= glm::mat4(1.0f);
     mRotationMatrix		= glm::mat4(1.0f);
     mScaleMatrix		= glm::mat4(1.0f);
-    // set scale matrix (build a scale matrix created from 3 scalars)
+// set scale matrix (build a scale matrix created from 3 scalars)
     mScaleMatrix = glm::scale(mScaleMatrix, Scales); // nice easy function
-    // set Rotation Matrix
+// set Rotation Matrix
     MakeRotationMatrix(); // this is a bit complex so go do them
-    // set translation
+// set translation
     mTranslationMatrix	= glm::translate(mTranslationMatrix, WorldPosition); //use the glm translate
-    // now make the Model for use in render
+// now make the Model for use in render
     Model = mTranslationMatrix * mRotationMatrix * mScaleMatrix;
 }
 
@@ -77,7 +80,8 @@ ObjectModel::MakeRotationMatrix() {
 }
 
 
-// Simply create the model matrix, assumes the translations and others have been set
+// Simply create the model matrix, assumes
+// the translations and others have been set
 void
 ObjectModel::MakeModelMatrix() {
     Model = mTranslationMatrix * mRotationMatrix * mScaleMatrix;
@@ -151,11 +155,11 @@ ObjectModel::StoreGraphicClass(Graphics* Graphics) {
 }
 
 
-
-
 btCollisionShape*
 ObjectModel::CreateMyShape(ShapeTypes shape) {
-    btVector3 vBox = btVector3((bmax[0]-bmin[0])/2, (bmax[1]-bmin[1])/2, (bmax[2]-bmin[2])/2);
+    btVector3 vBox = btVector3((bmax[0]-bmin[0])/2,
+                               (bmax[1]-bmin[1])/2,
+                               (bmax[2]-bmin[2])/2);
     btCollisionShape* pShape= nullptr;
     switch(shape) {
         case BOX: {
@@ -179,7 +183,8 @@ ObjectModel::CreateMyShape(ShapeTypes shape) {
 }
 
 
-// These are collision response systems, Objectmodel should not be handling the logic
+// These are collision response systems,
+// ObjectModel should not handle the logic
 void
 ObjectModel::HandleCollision(const ObjectModel* whohitme) {
     (void)whohitme;
@@ -197,7 +202,7 @@ ObjectModel::HandleSeparation(const ObjectModel* whohitme) {
 
 
 // A contact object may also include an object reported as a collision.
-// its up to the logic to decide if thats relevent
+// It is up to the logic to decide if that's relevent
 void
 ObjectModel::HandleContact(const ObjectModel *whohitme) {
     (void)whohitme;

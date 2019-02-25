@@ -41,7 +41,7 @@ public:
 	~Game();
 	
     Graphics*     pMyGraphics;
-    MyFiles*      pHandler;
+    MyFiles*      pFileHandler;
     ModelManager* pMainModelManager; // all models are loaded and info stored here this managter is passed to objects created
     Camera*	      pTheCamera;
     EnemyManager* pEManager;
@@ -80,6 +80,7 @@ public:
 	CollisionProcess Collision;
 
 protected:
+    void InitObjects();
     Rays RayClass;
 };
 
